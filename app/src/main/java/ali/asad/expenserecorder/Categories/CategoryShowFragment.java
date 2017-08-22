@@ -3,6 +3,7 @@ package ali.asad.expenserecorder.Categories;
 import android.app.Fragment;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,13 +26,13 @@ public class CategoryShowFragment extends Fragment {
     CategoryRecyclerViewAdapter adapter;
 
     static List<String> deleteListID;
-    public static List<String[]> Categorylist = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.show_category_fragment, container, false);
+        recylerView = (RecyclerView) rootView.findViewById(R.id.listViewCategory);
         getActivity().setTitle("Expense Categories");
         MakeList();
         
@@ -39,7 +40,7 @@ public class CategoryShowFragment extends Fragment {
     }
 
     public void MakeList() {
-        recylerView = (RecyclerView) rootView.findViewById(R.id.listViewCategory);
+
         list = new ArrayList<HashMap<String, String>>();
         System.out.println("ID Category Icon");
         CategoryDBhelper db = new CategoryDBhelper(getActivity());
@@ -51,9 +52,9 @@ public class CategoryShowFragment extends Fragment {
             String icon = categoryList.get(i)[2];//PUT THIS IN LIST VIEW TOO in an imageview
 
             HashMap<String, String> temp = new HashMap<String, String>();
-            temp.put(CategoryListViewAdapter.FIRST_COLUMN, cat);
-            temp.put(CategoryListViewAdapter.SECOND_COLUMN, icon);
-            temp.put(CategoryListViewAdapter.THIRD_COLUMN, id);
+            temp.put(CategoryRecyclerViewAdapter.FIRST_COLUMN, cat);
+            temp.put(CategoryRecyclerViewAdapter.SECOND_COLUMN, icon);
+            temp.put(CategoryRecyclerViewAdapter.THIRD_COLUMN, id);
 
             list.add(temp);
             System.out.println(id + " " + cat + " " + icon);
@@ -61,6 +62,7 @@ public class CategoryShowFragment extends Fragment {
         adapter = new CategoryRecyclerViewAdapter(getActivity(), list);
         adapter.notifyDataSetChanged();
         recylerView.setAdapter(adapter);
+        recylerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         deleteListID = new ArrayList<String>();
     }
