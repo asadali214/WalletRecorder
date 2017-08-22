@@ -6,7 +6,8 @@
     <solid android:color="#000" />
 
 
-    <corners android:radius="20dp" />
+    <corners
+        android:bottomLeftRadius="40dp"/>
 
     <gradient
         android:angle="135"

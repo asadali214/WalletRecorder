@@ -373,10 +373,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBudget(View view) {
         //it should open up a dialog to change the value of budget
         final Dialog dialog = new Dialog(this);
+
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_budget);
-
         dialog.setTitle("Enter new budget!");
+
         Button ok = (Button) dialog.findViewById(R.id.btnOk);
         Button cancel = (Button) dialog.findViewById(R.id.btnCancel);
         final EditText input = (EditText) dialog.findViewById(R.id.ETbudget);
@@ -431,9 +432,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onStartingBalance(View view) {
         //it should open up a dialog to change the value of budget
         final Dialog dialog = new Dialog(this);
+
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_starting_balance);
-
         dialog.setTitle("Enter new starting balance!");
         Button ok = (Button) dialog.findViewById(R.id.btnOk);
         Button cancel = (Button) dialog.findViewById(R.id.btnCancel);
