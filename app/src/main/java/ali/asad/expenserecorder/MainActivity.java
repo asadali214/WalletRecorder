@@ -40,7 +40,7 @@ import ali.asad.expenserecorder.Status.ViewPagerAdapter;
 import ali.asad.expenserecorder.Status.YearlySummaryFragment;
 
 /*
-* This is the main activity
+* This is the great main activity
  */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
