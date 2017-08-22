@@ -39,9 +39,7 @@ import ali.asad.expenserecorder.Status.StatusTabFragment;
 import ali.asad.expenserecorder.Status.ViewPagerAdapter;
 import ali.asad.expenserecorder.Status.YearlySummaryFragment;
 
-/*
-* This is the great main activity
- */
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     HomeFragment homeFragment = new HomeFragment();
