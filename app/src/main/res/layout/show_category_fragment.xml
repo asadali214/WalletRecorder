@@ -3,14 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF">
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/listViewCategory"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_weight="13"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:layout_width="match_parent"

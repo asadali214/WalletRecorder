@@ -3,6 +3,7 @@ package ali.asad.expenserecorder.Categories;
 import android.app.Fragment;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import ali.asad.expenserecorder.R;
 
 public class CategoryShowFragment extends Fragment {
     ArrayList<HashMap<String, String>> list;
-    ListView listView;
+    RecyclerView listView;
     View rootView;
     CategoryListViewAdapter adapter;
 
@@ -63,7 +64,7 @@ public class CategoryShowFragment extends Fragment {
     }
 
     public void MakeList() {
-        listView = (ListView) rootView.findViewById(R.id.listViewCategory);
+        listView = (RecyclerView) rootView.findViewById(R.id.listViewCategory);
         list = new ArrayList<HashMap<String, String>>();
         System.out.println("ID Category Icon");
         CategoryDBhelper db = new CategoryDBhelper(getActivity());
