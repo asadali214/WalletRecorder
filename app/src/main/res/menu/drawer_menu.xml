@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/home_menu"
+            android:title="Home"
+            android:icon="@drawable/ic_home_black_48dp">
+        </item>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:title="Status">
+            <menu>
+                <item
+                    android:id="@+id/status_menu"
+                    android:title="Wallet Status"
+                    android:icon="@drawable/ic_assignment_black_48dp">
+                </item>
+            </menu>
+        </item>
+    </group>
+    <group android:checkableBehavior="single">
+        <item android:title="Details">
+            <menu>
+                <item
+                    android:id="@+id/Income_menu"
+                    android:title="Incomes"
+                    android:icon="@drawable/ic_account_balance_wallet_black_48dp">
+                </item>
+                <item
+                android:id="@+id/Expense_menu"
+                android:title="Expenses"
+                android:icon="@drawable/ic_payment_black_48dp">
+                </item>
+                <item
+                    android:id="@+id/Category_menu"
+                    android:title="Expense Categories"
+                    android:icon="@drawable/ic_dns_black_48dp">
+                </item>
+            </menu>
+        </item>
+    </group>
+</menu>

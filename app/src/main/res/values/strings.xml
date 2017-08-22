@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Wallet Recorder</string>
+    <string name="budget_consumption">Budget Consumption</string>
+    <string name="account_balance">Account Balance</string>
+</resources>
