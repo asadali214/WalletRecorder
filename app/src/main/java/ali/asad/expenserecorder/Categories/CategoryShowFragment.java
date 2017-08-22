@@ -7,11 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,11 +20,11 @@ import ali.asad.expenserecorder.R;
 
 public class CategoryShowFragment extends Fragment {
     ArrayList<HashMap<String, String>> list;
-    RecyclerView listView;
+    RecyclerView recylerView;
     View rootView;
-    CategoryListViewAdapter adapter;
+    CategoryRecyclerViewAdapter adapter;
 
-    List<String> deleteListID;
+    static List<String> deleteListID;
     public static List<String[]> Categorylist = new ArrayList<>();
 
     @Override
@@ -39,32 +34,12 @@ public class CategoryShowFragment extends Fragment {
         rootView = inflater.inflate(R.layout.show_category_fragment, container, false);
         getActivity().setTitle("Expense Categories");
         MakeList();
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                System.out.println("Item # " + pos + " pressed");
-                CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBoxCategory);
-                TextView hidden = (TextView) view.findViewById(R.id.hiddenCategory);
-                if (checkBox.isChecked()) {
-                    LinearLayout.LayoutParams pram=new LinearLayout.LayoutParams(0,0);
-                    checkBox.setLayoutParams(pram);
-                    checkBox.setChecked(false);
-                    deleteListID.remove(hidden.getText().toString());//Removing clicked item from deleteArray
-                } else {
-                    LinearLayout.LayoutParams pram=new LinearLayout.LayoutParams(100,100);
-                    checkBox.setLayoutParams(pram);
-                    checkBox.setChecked(true);
-                    deleteListID.add(hidden.getText().toString());//Adding clicked item's id to deleteArray
-
-                }
-            }
-        });
+        
         return rootView;
     }
 
     public void MakeList() {
-        listView = (RecyclerView) rootView.findViewById(R.id.listViewCategory);
+        recylerView = (RecyclerView) rootView.findViewById(R.id.listViewCategory);
         list = new ArrayList<HashMap<String, String>>();
         System.out.println("ID Category Icon");
         CategoryDBhelper db = new CategoryDBhelper(getActivity());
@@ -83,9 +58,9 @@ public class CategoryShowFragment extends Fragment {
             list.add(temp);
             System.out.println(id + " " + cat + " " + icon);
         }
-        adapter = new CategoryListViewAdapter(getActivity(), list);
+        adapter = new CategoryRecyclerViewAdapter(getActivity(), list);
         adapter.notifyDataSetChanged();
-        listView.setAdapter(adapter);
+        recylerView.setAdapter(adapter);
 
         deleteListID = new ArrayList<String>();
     }

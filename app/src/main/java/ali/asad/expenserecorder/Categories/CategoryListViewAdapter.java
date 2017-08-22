@@ -84,6 +84,7 @@ public class CategoryListViewAdapter extends BaseAdapter {
         hidden =(TextView) convertView.findViewById(R.id.hiddenCategory);
         txtName = (TextView) convertView.findViewById(R.id.txtName);
         icon = (ImageView) convertView.findViewById(R.id.imageIcon);
+
         HashMap<String, String> map = list.get(position);
         txtName.setText(map.get(FIRST_COLUMN));
         Picasso.with(activity).load(activity.getResources().getIdentifier(map.get(SECOND_COLUMN),

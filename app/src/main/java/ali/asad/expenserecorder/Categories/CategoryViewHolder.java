@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import ali.asad.expenserecorder.R;
@@ -30,6 +31,17 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.
 
     @Override
     public void onClick(View v) {
+        if (checkBox.isChecked()) {
+            LinearLayout.LayoutParams pram=new LinearLayout.LayoutParams(0,0);
+            checkBox.setLayoutParams(pram);
+            checkBox.setChecked(false);
+            CategoryShowFragment.deleteListID.remove(hidden.getText().toString());//Removing clicked item from deleteArray
+        } else {
+            LinearLayout.LayoutParams pram=new LinearLayout.LayoutParams(100,100);
+            checkBox.setLayoutParams(pram);
+            checkBox.setChecked(true);
+            CategoryShowFragment.deleteListID.add(hidden.getText().toString());//Adding clicked item's id to deleteArray
 
+        }
     }
 }
