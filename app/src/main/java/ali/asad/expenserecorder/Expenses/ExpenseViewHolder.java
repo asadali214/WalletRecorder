@@ -33,6 +33,7 @@ public class ExpenseViewHolder extends RecyclerView.ViewHolder implements View.O
         txtCategory = (TextView) convertView.findViewById(R.id.txtCategory);
         icon = (ImageView) convertView.findViewById(R.id.iconExpense);
         convertView.setOnClickListener(this);
+        convertView.setOnTouchListener(ExpenseShowFragment.expenseSwipeListener);
     }
 
 

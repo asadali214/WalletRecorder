@@ -35,7 +35,8 @@ public class ExpenseShowFragment extends Fragment {
     List<String> listMonth;
     List<String> listYear;
 
-    public static List<String> deleteListID;
+    static OnSwipeTouchListener expenseSwipeListener;
+    static List<String> deleteListID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +47,38 @@ public class ExpenseShowFragment extends Fragment {
 
         month = (Spinner) rootView.findViewById(R.id.monthSpinnerExpense);
         year = (Spinner) rootView.findViewById(R.id.yearSpinnerExpense);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.listViewExpense);
+
+        expenseSwipeListener=new OnSwipeTouchListener(getActivity()){
+            public void onSwipeTop() {
+                LinearLayoutManager lm =(LinearLayoutManager) recyclerView.getLayoutManager();
+                System.out.println(lm.findLastCompletelyVisibleItemPosition());
+                if (recyclerView.getChildCount() == 0 ||
+                        (lm.findLastCompletelyVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1 &&
+                                recyclerView.getChildAt(recyclerView.getChildCount() - 1).getBottom() <= recyclerView.getHeight())) {
+                    //It is scrolled all the way down
+                    if (month.getSelectedItemPosition() + 1 < months.length) {
+                        int newPosition = month.getSelectedItemPosition() + 1;
+                        month.setSelection(newPosition);
+                    } else
+                        month.setSelection(0);
+                }
+            }
+            public void onSwipeBottom() {
+                LinearLayoutManager lm =(LinearLayoutManager) recyclerView.getLayoutManager();
+                System.out.println(lm.findFirstCompletelyVisibleItemPosition());
+                if (recyclerView.getChildCount() == 0 ||
+                        (lm.findFirstCompletelyVisibleItemPosition() == 0 &&
+                                recyclerView.getChildAt(0).getTop() >= 0)) {
+                    //It is scrolled all the way up
+                    if (month.getSelectedItemPosition() - 1 >= 0) {
+                        int newPosition = month.getSelectedItemPosition() - 1;
+                        month.setSelection(newPosition);
+                    } else
+                        month.setSelection(months.length - 1);
+                }
+            }
+        };
         listMonth = new ArrayList<String>();
         listYear = new ArrayList<String>();
 
@@ -98,50 +131,11 @@ public class ExpenseShowFragment extends Fragment {
             }
         });
         MakeList();
-        recyclerView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
-
-            public void onSwipeTop() {
-                LinearLayoutManager lm =(LinearLayoutManager) recyclerView.getLayoutManager();
-                System.out.println(lm.findLastCompletelyVisibleItemPosition());
-                if (recyclerView.getChildCount() == 0 ||
-                        (lm.findLastCompletelyVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1 &&
-                                recyclerView.getChildAt(recyclerView.getChildCount() - 1).getBottom() <= recyclerView.getHeight())) {
-                    //It is scrolled all the way down
-                    if (month.getSelectedItemPosition() + 1 < months.length) {
-                        int newPosition = month.getSelectedItemPosition() + 1;
-                        month.setSelection(newPosition);
-                    } else
-                        month.setSelection(0);
-
-                }
-
-            }
-
-            public void onSwipeBottom() {
-                LinearLayoutManager lm =(LinearLayoutManager) recyclerView.getLayoutManager();
-                System.out.println(lm.findFirstCompletelyVisibleItemPosition());
-                if (recyclerView.getChildCount() == 0 ||
-                        (lm.findFirstCompletelyVisibleItemPosition() == 0 &&
-                                recyclerView.getChildAt(0).getTop() >= 0)) {
-                    //It is scrolled all the way up
-                    if (month.getSelectedItemPosition() - 1 >= 0) {
-                        int newPosition = month.getSelectedItemPosition() - 1;
-                        month.setSelection(newPosition);
-                    } else
-                        month.setSelection(months.length - 1);
-                }
-            }
-
-
-        });
         return rootView;
     }
 
     public void MakeList() {
-
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.listViewExpense);
         list = new ArrayList<HashMap<String, String>>();
-
         ExpenseDBhelper db = new ExpenseDBhelper(getActivity());
         List<String[]> expenseList;
         if (!month.getSelectedItem().toString().equals("All"))
@@ -168,11 +162,11 @@ public class ExpenseShowFragment extends Fragment {
         }
 
         ExpenseRecyclerViewAdapter adapter = new ExpenseRecyclerViewAdapter(getActivity(), list);
+        recyclerView.setOnTouchListener(expenseSwipeListener);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         deleteListID = new ArrayList<String>();
-        System.out.println("A");
     }
 
     public void onClearExpenses() {

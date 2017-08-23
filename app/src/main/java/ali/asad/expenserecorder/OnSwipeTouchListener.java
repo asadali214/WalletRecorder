@@ -25,8 +25,8 @@ public class OnSwipeTouchListener implements OnTouchListener {
 
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
-        private static final int SWIPE_THRESHOLD = 200;
-        private static final int SWIPE_VELOCITY_THRESHOLD = 250;
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
         @Override
         public boolean onDown(MotionEvent e) {
@@ -59,9 +59,8 @@ public class OnSwipeTouchListener implements OnTouchListener {
                 }
             } catch (Exception exception) {
                 exception.printStackTrace();
-                System.out.println("Error in Swipe");
+
             }
-            System.out.println("B "+result);
             return result;
         }
     }
