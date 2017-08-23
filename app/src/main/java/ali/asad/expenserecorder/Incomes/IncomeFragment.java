@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 import ali.asad.expenserecorder.Status.StatusDBhelper;
 import ali.asad.expenserecorder.R;
 
@@ -56,8 +58,19 @@ public class IncomeFragment extends Fragment {
             StatusDBhelper dbHome = new StatusDBhelper(getActivity());
             String month = GetMonthNumber(Date);
             String year = GetYearNumber(Date);
-            //Get Running of previous month for starting of this month.
-            int starting = dbHome.getRunning(getPrevMonth(month), getPrevYear(month, year));
+
+            int starting;
+            Calendar cal = Calendar.getInstance();
+            int monthS = cal.get(Calendar.MONTH);
+            int yearS = cal.get(Calendar.YEAR);
+            if(monthS == Integer.parseInt(month) && yearS == Integer.parseInt(year)) {
+                //As the starting balance of current month can be changed by user
+                starting = dbHome.getStarting(month, year);
+            }
+            else{
+                //Get Running of previous month for the starting of this month if its not current month
+                starting =dbHome.getRunning(getPrevMonth(month), getPrevYear(month,year));
+            }
             int incomes = dbHome.getIncomes(month, year) + Integer.parseInt(amount.getText().toString());
             int expenses = dbHome.getExpenses(month, year);
             int running = starting + incomes - expenses;

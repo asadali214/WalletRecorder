@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import ali.asad.expenserecorder.Categories.CategoryDBhelper;
@@ -78,9 +79,19 @@ public class ExpenseFragment extends Fragment {
             String month =GetMonthNumber(Date);
             String year = GetYearNumber(Date);
 
-            //Get Running of previous month for the starting of this month
-            int starting =dbHome.getRunning(getPrevMonth(month), getPrevYear(month,year));
-            int incomes =dbHome.getIncomes(month,year)+0;
+            int starting;
+            Calendar cal = Calendar.getInstance();
+            int monthS = cal.get(Calendar.MONTH);
+            int yearS = cal.get(Calendar.YEAR);
+            if(monthS == Integer.parseInt(month) && yearS == Integer.parseInt(year)) {
+                //As the starting balance of current month can be changed by user
+                starting = dbHome.getStarting(month, year);
+            }
+            else{
+                //Get Running of previous month for the starting of this month if its not current month
+                starting =dbHome.getRunning(getPrevMonth(month), getPrevYear(month,year));
+            }
+            int incomes =dbHome.getIncomes(month,year);
             int expenses =dbHome.getExpenses(month,year)+Integer.parseInt(amount.getText().toString());;
             int running =starting+incomes-expenses;
             int savings =incomes-expenses;
