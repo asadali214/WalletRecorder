@@ -67,17 +67,15 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray" />
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/listViewIncome"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_weight="13"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true">
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:layout_width="match_parent"

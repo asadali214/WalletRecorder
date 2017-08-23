@@ -40,8 +40,6 @@ public class ExpenseViewHolder extends RecyclerView.ViewHolder implements View.O
 
     @Override
     public void onClick(View view) {
-        CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBoxExpense);
-        TextView hidden = (TextView) view.findViewById(R.id.hiddenExpense);
         if (checkBox.isChecked()) {
             LinearLayout.LayoutParams pram = new LinearLayout.LayoutParams(0, 0);
             checkBox.setLayoutParams(pram);

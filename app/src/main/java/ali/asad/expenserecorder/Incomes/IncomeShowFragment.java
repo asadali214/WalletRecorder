@@ -3,25 +3,23 @@ package ali.asad.expenserecorder.Incomes;
 import android.app.Fragment;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-import ali.asad.expenserecorder.Status.StatusDBhelper;
 import ali.asad.expenserecorder.OnSwipeTouchListener;
 import ali.asad.expenserecorder.R;
+import ali.asad.expenserecorder.Status.StatusDBhelper;
 
 /**
  * Created by AsadAli on 15-Jul-17.
@@ -29,7 +27,7 @@ import ali.asad.expenserecorder.R;
 
 public class IncomeShowFragment extends Fragment {
     ArrayList<HashMap<String, String>> list;
-    ListView listView;
+    RecyclerView recyclerView;
     Spinner month, year;
     View rootView;
 
@@ -37,7 +35,8 @@ public class IncomeShowFragment extends Fragment {
     List<String> listMonth;
     List<String> listYear;
 
-    List<String> deleteListID;
+    static OnSwipeTouchListener incomeSwipeListener;
+    static List<String> deleteListID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,9 +44,40 @@ public class IncomeShowFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.show_income_fragment, container, false);
         getActivity().setTitle("Incomes");
-
         month = (Spinner) rootView.findViewById(R.id.monthSpinnerIncome);
         year = (Spinner) rootView.findViewById(R.id.yearSpinnerIncome);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.listViewIncome);
+        incomeSwipeListener= new OnSwipeTouchListener(getActivity()) {
+            public void onSwipeTop() {
+                LinearLayoutManager lm =(LinearLayoutManager) recyclerView.getLayoutManager();
+                System.out.println(lm.findLastCompletelyVisibleItemPosition());
+                if (recyclerView.getChildCount() == 0 ||
+                        (lm.findLastCompletelyVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1 &&
+                                recyclerView.getChildAt(recyclerView.getChildCount() - 1).getBottom() <= recyclerView.getHeight())) {
+                    //It is scrolled all the way down
+                    if (month.getSelectedItemPosition() + 1 < months.length) {
+                        int newPosition = month.getSelectedItemPosition() + 1;
+                        month.setSelection(newPosition);
+                    } else
+                        month.setSelection(0);
+                }
+            }
+            public void onSwipeBottom() {
+                LinearLayoutManager lm =(LinearLayoutManager) recyclerView.getLayoutManager();
+                System.out.println(lm.findFirstCompletelyVisibleItemPosition());
+                if (recyclerView.getChildCount() == 0 ||
+                        (lm.findFirstCompletelyVisibleItemPosition() == 0 &&
+                                recyclerView.getChildAt(0).getTop() >= 0)) {
+                    //It is scrolled all the way up
+                    if (month.getSelectedItemPosition() - 1 >= 0) {
+                        int newPosition = month.getSelectedItemPosition() - 1;
+                        month.setSelection(newPosition);
+                    } else
+                        month.setSelection(months.length - 1);
+                }
+            }
+        };
+
         listMonth = new ArrayList<String>();
         listYear = new ArrayList<String>();
         Calendar cal = Calendar.getInstance();
@@ -99,65 +129,12 @@ public class IncomeShowFragment extends Fragment {
         });
 
         MakeList();
-        listView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
-
-            public void onSwipeTop() {
-                if (listView.getChildCount() == 0 ||
-                        (listView.getLastVisiblePosition() == listView.getAdapter().getCount() - 1 &&
-                                listView.getChildAt(listView.getChildCount() - 1).getBottom() <= listView.getHeight())) {
-                    //It is scrolled all the way down
-                    if (month.getSelectedItemPosition() + 1 < months.length) {
-                        int newPosition = month.getSelectedItemPosition() + 1;
-                        month.setSelection(newPosition);
-                    } else
-                        month.setSelection(0);
-
-                }
-
-            }
-
-            public void onSwipeBottom() {
-                if (listView.getChildCount() == 0 ||
-                        (listView.getFirstVisiblePosition() == 0 &&
-                                listView.getChildAt(0).getTop() >= 0)) {
-
-                    if (month.getSelectedItemPosition() - 1 >= 0) {
-                        int newPosition = month.getSelectedItemPosition() - 1;
-                        month.setSelection(newPosition);
-                    } else
-                        month.setSelection(months.length - 1);
-                }
-            }
-
-
-        });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                System.out.println("Item # " + pos + " pressed");
-                CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBoxIncome);
-                TextView hidden = (TextView) view.findViewById(R.id.hiddenIncome);
-                if (checkBox.isChecked()) {
-                    LinearLayout.LayoutParams pram = new LinearLayout.LayoutParams(0, 0);
-                    checkBox.setLayoutParams(pram);
-                    checkBox.setChecked(false);
-                    deleteListID.remove(hidden.getText().toString());//Removing clicked item from deleteArray
-                } else {
-                    LinearLayout.LayoutParams pram = new LinearLayout.LayoutParams(100, 100);
-                    checkBox.setLayoutParams(pram);
-                    checkBox.setChecked(true);
-                    deleteListID.add(hidden.getText().toString());//Adding clicked item's id to deleteArray
-
-                }
-            }
-        });
         return rootView;
     }
 
     public void MakeList() {
-        listView = (ListView) rootView.findViewById(R.id.listViewIncome);
-        list = new ArrayList<HashMap<String, String>>();
 
+        list = new ArrayList<HashMap<String, String>>();
         System.out.println("ID Date Detail Amount");
         IncomeDBhelper db = new IncomeDBhelper(getActivity());
         List<String[]> incomeList;
@@ -173,18 +150,20 @@ public class IncomeShowFragment extends Fragment {
             String amount = incomeList.get(i)[3];
 
             HashMap<String, String> temp = new HashMap<String, String>();//temp for list view
-            temp.put(IncomeListViewAdapter.FIRST_COLUMN, months[Integer.parseInt(GetMonthNumber(date))] + " " + GetDayNumber(date));
-            temp.put(IncomeListViewAdapter.SECOND_COLUMN, detail);
-            temp.put(IncomeListViewAdapter.THIRD_COLUMN, amount);
-            temp.put(IncomeListViewAdapter.FOURTH_COLUMN, id);
+            temp.put(IncomeRecyclerViewAdapter.FIRST_COLUMN, months[Integer.parseInt(GetMonthNumber(date))] + " " + GetDayNumber(date));
+            temp.put(IncomeRecyclerViewAdapter.SECOND_COLUMN, detail);
+            temp.put(IncomeRecyclerViewAdapter.THIRD_COLUMN, amount);
+            temp.put(IncomeRecyclerViewAdapter.FOURTH_COLUMN, id);
 
             list.add(temp);
             System.out.println(id + " " + date + " " + detail + " " + amount);
         }
 
-        IncomeListViewAdapter adapter = new IncomeListViewAdapter(getActivity(), list);
+        IncomeRecyclerViewAdapter adapter = new IncomeRecyclerViewAdapter(getActivity(), list);
         //adapter.notifyDataSetChanged();
-        listView.setAdapter(adapter);
+        recyclerView.setOnTouchListener(incomeSwipeListener);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         deleteListID = new ArrayList<String>();
     }
