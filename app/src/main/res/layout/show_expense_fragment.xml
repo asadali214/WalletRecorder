@@ -66,7 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray" />
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/listViewExpense"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -76,7 +76,7 @@
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true">
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:layout_width="match_parent"

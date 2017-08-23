@@ -61,7 +61,6 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryVi
                 holder.checkBox.setLayoutParams(pram);
             }
         }
-        System.out.println("Created: "+holder.txtName.getText());
     }
 
     @Override
