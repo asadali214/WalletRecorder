@@ -47,35 +47,35 @@ public class IncomeShowFragment extends Fragment {
         month = (Spinner) rootView.findViewById(R.id.monthSpinnerIncome);
         year = (Spinner) rootView.findViewById(R.id.yearSpinnerIncome);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.listViewIncome);
-        incomeSwipeListener= new OnSwipeTouchListener(getActivity()) {
-            public void onSwipeTop() {
-                LinearLayoutManager lm =(LinearLayoutManager) recyclerView.getLayoutManager();
-                System.out.println(lm.findLastCompletelyVisibleItemPosition());
+        incomeSwipeListener = new OnSwipeTouchListener(getActivity()) {
+            public void onSwipeLeft() {
+                /*LinearLayoutManager lm =(LinearLayoutManager) recyclerView.getLayoutManager();
+
                 if (recyclerView.getChildCount() == 0 ||
                         (lm.findLastCompletelyVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1 &&
                                 recyclerView.getChildAt(recyclerView.getChildCount() - 1).getBottom() <= recyclerView.getHeight())) {
-                    //It is scrolled all the way down
-                    if (month.getSelectedItemPosition() + 1 < months.length) {
-                        int newPosition = month.getSelectedItemPosition() + 1;
-                        month.setSelection(newPosition);
-                    } else
-                        month.setSelection(0);
-                }
+                    //It is scrolled all the way down*/
+                if (month.getSelectedItemPosition() + 1 < months.length) {
+                    int newPosition = month.getSelectedItemPosition() + 1;
+                    month.setSelection(newPosition);
+                } else
+                    month.setSelection(0);
+                //}
             }
-            public void onSwipeBottom() {
-                LinearLayoutManager lm =(LinearLayoutManager) recyclerView.getLayoutManager();
-                System.out.println(lm.findFirstCompletelyVisibleItemPosition());
+
+            public void onSwipeRight() {
+                /*LinearLayoutManager lm =(LinearLayoutManager) recyclerView.getLayoutManager();
                 if (recyclerView.getChildCount() == 0 ||
                         (lm.findFirstCompletelyVisibleItemPosition() == 0 &&
                                 recyclerView.getChildAt(0).getTop() >= 0)) {
-                    //It is scrolled all the way up
-                    if (month.getSelectedItemPosition() - 1 >= 0) {
-                        int newPosition = month.getSelectedItemPosition() - 1;
-                        month.setSelection(newPosition);
-                    } else
-                        month.setSelection(months.length - 1);
-                }
+                    //It is scrolled all the way up*/
+                if (month.getSelectedItemPosition() - 1 >= 0) {
+                    int newPosition = month.getSelectedItemPosition() - 1;
+                    month.setSelection(newPosition);
+                } else
+                    month.setSelection(months.length - 1);
             }
+            //}
         };
 
         listMonth = new ArrayList<String>();
