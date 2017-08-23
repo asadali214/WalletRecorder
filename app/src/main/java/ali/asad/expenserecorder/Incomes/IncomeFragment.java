@@ -56,11 +56,10 @@ public class IncomeFragment extends Fragment {
             StatusDBhelper dbHome = new StatusDBhelper(getActivity());
             String month = GetMonthNumber(Date);
             String year = GetYearNumber(Date);
-
             //Get Running of previous month for starting of this month.
-            int starting = dbHome.getRunning(getPrevMonth(month), getPrevYear(month,year));
+            int starting = dbHome.getRunning(getPrevMonth(month), getPrevYear(month, year));
             int incomes = dbHome.getIncomes(month, year) + Integer.parseInt(amount.getText().toString());
-            int expenses = dbHome.getExpenses(month, year) + 0;
+            int expenses = dbHome.getExpenses(month, year);
             int running = starting + incomes - expenses;
             int savings = incomes - expenses;
             int budget = dbHome.getBudget(month, year);

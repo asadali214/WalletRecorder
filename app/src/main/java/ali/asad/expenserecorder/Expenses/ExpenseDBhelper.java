@@ -200,7 +200,7 @@ public class ExpenseDBhelper extends SQLiteOpenHelper {
         String amount = "";
         SQLiteDatabase dbRead = getReadableDatabase();
         String[] projection = {ExpenseEntry.COLUMN_NAME_AMOUNT};
-        String whereClause = ExpenseEntry._ID + " = ?";
+        String whereClause = ExpenseEntry._ID + " = ? ";
         String[] whereArgs = new String[]{"" + id};
         Cursor cursor = dbRead.query(
                 ExpenseEntry.TABLE_NAME,                // The table to query >>TABLE_NAME
