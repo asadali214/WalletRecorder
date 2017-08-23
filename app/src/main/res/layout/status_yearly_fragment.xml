@@ -28,13 +28,9 @@
             />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView2"
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="200dp"
-        android:textSize="30dp"
-        android:text="Yearly Summary" />
+        android:layout_height= "match_parent"/>
 
 </LinearLayout>
