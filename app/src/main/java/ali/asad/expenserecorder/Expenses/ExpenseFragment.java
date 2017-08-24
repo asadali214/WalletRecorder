@@ -85,10 +85,12 @@ public class ExpenseFragment extends Fragment {
             int yearS = cal.get(Calendar.YEAR);
             if(monthS == Integer.parseInt(month) && yearS == Integer.parseInt(year)) {
                 //As the starting balance of current month can be changed by user
+                System.out.println("Current Month "+monthS+" and Year "+yearS);
                 starting = dbHome.getStarting(month, year);
             }
             else{
                 //Get Running of previous month for the starting of this month if its not current month
+                System.out.println("NOT Current Month "+month+" and NOT Year "+year);
                 starting =dbHome.getRunning(getPrevMonth(month), getPrevYear(month,year));
             }
             int incomes =dbHome.getIncomes(month,year);

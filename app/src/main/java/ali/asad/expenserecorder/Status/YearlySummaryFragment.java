@@ -52,10 +52,10 @@ public class YearlySummaryFragment extends Fragment implements AdapterView.OnIte
         List<PieEntry> pieEntries = new ArrayList<>();
         for (int i = 0; i < months.length; i++) {
             String Val;
-            if (i < 10)
-                Val = "0" + i;
+            if ((i+1) < 10)
+                Val = "0" + (i+1);
             else
-                Val = "" + i;
+                Val = "" + (i+1);
 
             pieEntries.add(new PieEntry(db.getExpenses(Val,""+year.getSelectedItem()),months[i]));
         }
@@ -67,7 +67,6 @@ public class YearlySummaryFragment extends Fragment implements AdapterView.OnIte
         pieChart.animateY(1000);
         pieChart.invalidate();
         pieChart.setRotationAngle(0);
-        pieChart.setRotationEnabled(true);
     }
 
     @Override

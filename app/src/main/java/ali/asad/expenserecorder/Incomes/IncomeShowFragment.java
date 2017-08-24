@@ -160,7 +160,6 @@ public class IncomeShowFragment extends Fragment {
         }
 
         IncomeRecyclerViewAdapter adapter = new IncomeRecyclerViewAdapter(getActivity(), list);
-        //adapter.notifyDataSetChanged();
         recyclerView.setOnTouchListener(incomeSwipeListener);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
