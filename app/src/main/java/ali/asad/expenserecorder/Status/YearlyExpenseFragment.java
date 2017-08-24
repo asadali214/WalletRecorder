@@ -22,33 +22,29 @@ import ali.asad.expenserecorder.R;
 import static ali.asad.expenserecorder.Status.StatusTabFragment.adpYear;
 
 /**
- * Created by AsadAli on 03-Aug-17.
+ * Created by AsadAli on 24-Aug-17.
  */
 
-public class YearlySummaryFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-
+public class YearlyExpenseFragment extends Fragment implements AdapterView.OnItemSelectedListener{
     String months[] = {"January", "February", "March", "April", "May",
             "June", "July", "August", "September", "October", "November", "December"};
     PieChart pieChart;
     public static Spinner year;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.status_yearly_fragment, container, false);
-        System.out.println("Yearly Summary Open");
+        View rootView = inflater.inflate(R.layout.status_yearly_expense_fragment,container,false);
+        System.out.println("Expense Summary Open");
 
-        pieChart = (PieChart) rootView.findViewById(R.id.pieChart);
+        pieChart = (PieChart) rootView.findViewById(R.id.pieChartExpense);
         pieChart.setRotationEnabled(false);
-        year = (Spinner) rootView.findViewById(R.id.yearSpinnerSummary);
+        year = (Spinner) rootView.findViewById(R.id.yearSpinnerSummaryExpense);
         year.setAdapter(adpYear);
         year.setOnItemSelectedListener(this);
         year.setSelection(StatusTabFragment.SelectionPosition);
 
         return rootView;
     }
-
     private void setUpPieChart() {
         StatusDBhelper db = new StatusDBhelper(getActivity());
         List<PieEntry> pieEntries = new ArrayList<>();
@@ -75,8 +71,8 @@ public class YearlySummaryFragment extends Fragment implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        //setUpPieChart();
         StatusTabFragment.SelectionPosition = year.getSelectedItemPosition();
+        setUpPieChart();
     }
 
     @Override

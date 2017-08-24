@@ -22,49 +22,45 @@ import ali.asad.expenserecorder.R;
 import static ali.asad.expenserecorder.Status.StatusTabFragment.adpYear;
 
 /**
- * Created by AsadAli on 03-Aug-17.
+ * Created by AsadAli on 24-Aug-17.
  */
 
-public class YearlySummaryFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-
+public class YearlyIncomeFragment extends Fragment implements AdapterView.OnItemSelectedListener{
     String months[] = {"January", "February", "March", "April", "May",
             "June", "July", "August", "September", "October", "November", "December"};
     PieChart pieChart;
     public static Spinner year;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.status_yearly_fragment, container, false);
-        System.out.println("Yearly Summary Open");
+        View rootView = inflater.inflate(R.layout.status_yearly_income_fragment,container,false);
+        System.out.println("Income Summary Open");
 
-        pieChart = (PieChart) rootView.findViewById(R.id.pieChart);
+        pieChart = (PieChart) rootView.findViewById(R.id.pieChartIncome);
         pieChart.setRotationEnabled(false);
-        year = (Spinner) rootView.findViewById(R.id.yearSpinnerSummary);
+        year = (Spinner) rootView.findViewById(R.id.yearSpinnerSummaryIncome);
         year.setAdapter(adpYear);
         year.setOnItemSelectedListener(this);
         year.setSelection(StatusTabFragment.SelectionPosition);
 
         return rootView;
     }
-
     private void setUpPieChart() {
         StatusDBhelper db = new StatusDBhelper(getActivity());
         List<PieEntry> pieEntries = new ArrayList<>();
         for (int i = 0; i < months.length; i++) {
-            String Val;
+            String ValMonth;
             if ((i+1) < 10)
-                Val = "0" + (i+1);
+                ValMonth = "0" + (i+1);
             else
-                Val = "" + (i+1);
+                ValMonth = "" + (i+1);
 
-            int Expense= db.getExpenses(Val,""+year.getSelectedItem());
-            if(Expense!=0)
-                pieEntries.add(new PieEntry(Expense,months[i]));
+            int Incomes= db.getIncomes(ValMonth,""+year.getSelectedItem());
+            if(Incomes!=0)
+                pieEntries.add(new PieEntry(Incomes,months[i]));
         }
 
-        PieDataSet dataset = new PieDataSet(pieEntries, "Expenses of Year "+year.getSelectedItem());
+        PieDataSet dataset = new PieDataSet(pieEntries, "Incomes of Year "+year.getSelectedItem());
         dataset.setColors(ColorTemplate.COLORFUL_COLORS);
         PieData data = new PieData(dataset);
         pieChart.setData(data);
@@ -75,8 +71,8 @@ public class YearlySummaryFragment extends Fragment implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        //setUpPieChart();
         StatusTabFragment.SelectionPosition = year.getSelectedItemPosition();
+        setUpPieChart();
     }
 
     @Override

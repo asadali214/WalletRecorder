@@ -1,37 +1,39 @@
 package ali.asad.expenserecorder.Status;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import ali.asad.expenserecorder.OnSwipeTouchListener;
 import ali.asad.expenserecorder.R;
-
-import static ali.asad.expenserecorder.Status.StatusTabFragment.adpMonth;
-import static ali.asad.expenserecorder.Status.StatusTabFragment.adpYear;
 
 /**
  * Created by AsadAli on 03-Aug-17.
  */
 
 public class AccountStatusFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-    public static TextView StartingBalance, Income, TotalExpenses, RunningBalance, Savings, Budget;
-    public static Spinner month, year;
+    public TextView StartingBalance, Income, TotalExpenses, RunningBalance, Savings, Budget;
+    public Spinner month, year;
     String months[] = {"nothing","January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
+    List<String> listMonth;
+    List<String> listYear;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.status_account_fragment, container, false);
-        System.out.println("Account Status Open");
+        System.out.println("Account Status Opened");
 
         StartingBalance = (TextView) rootView.findViewById(R.id.startingBalance);
         Income = (TextView) rootView.findViewById(R.id.income);
@@ -42,16 +44,41 @@ public class AccountStatusFragment extends Fragment implements AdapterView.OnIte
         month = (Spinner) rootView.findViewById(R.id.monthSpinner);
         year = (Spinner) rootView.findViewById(R.id.yearSpinner);
 
+        listMonth = new ArrayList<String>();
+        listYear = new ArrayList<String>();
+
         Calendar cal = Calendar.getInstance();
-        int currentMonth = cal.get(Calendar.MONTH);//as jan=0 feb=1 mar=2 ...
+        int currentMonth = cal.get(Calendar.MONTH);
+        int currentYear = cal.get(Calendar.YEAR);
+
+        listYear.add("" + currentYear);
+        for (int i = 1; i < months.length; i++) {
+            listMonth.add(months[i]);
+        }
+
+        StatusDBhelper db=new StatusDBhelper(getActivity());
+        db.deleteEmptyRows();
+        List<String> yearList =db.getAllYears();
+        for (int i = 0; i < yearList.size(); i++) {
+            String year= yearList.get(i);
+            if (YearNotAlready(year))
+                listYear.add(year);
+        }
+
+        ArrayAdapter<String> adpMonth = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+                R.layout.spinner_layout_text, listMonth);
+        ArrayAdapter<String> adpYear = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+                R.layout.spinner_layout_text, listYear);
+
 
         month.setAdapter(adpMonth);
         year.setAdapter(adpYear);
         month.setOnItemSelectedListener(this);
         month.setSelection(currentMonth);
         year.setOnItemSelectedListener(this);
+
         rootView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
-            public void onSwipeTop() {
+            public void onSwipeLeft() {
                 if (month.getSelectedItemPosition() + 1 < months.length-1) {
                     int newPosition = month.getSelectedItemPosition() + 1;
                     month.setSelection(newPosition);
@@ -59,7 +86,7 @@ public class AccountStatusFragment extends Fragment implements AdapterView.OnIte
                 else
                     month.setSelection(0);
             }
-            public void onSwipeBottom() {
+            public void onSwipeRight() {
                 if (month.getSelectedItemPosition() - 1 >= 0) {
                     int newPosition = month.getSelectedItemPosition() - 1;
                     month.setSelection(newPosition);
@@ -68,10 +95,11 @@ public class AccountStatusFragment extends Fragment implements AdapterView.OnIte
                     month.setSelection(months.length-2);
             }
         });
+
         return rootView;
     }
 
-    public static void SetValuesToTextViews
+    public void SetValuesToTextViews
             (int starting, int running, int incomes, int expenses, int savings, int budget) {
         StartingBalance.setText("" + starting);
         Income.setText("" + incomes);
@@ -90,7 +118,7 @@ public class AccountStatusFragment extends Fragment implements AdapterView.OnIte
         StatusDBhelper dbHome = new StatusDBhelper(getActivity());
 
         //refreshing the fields in AccountStatusFragment
-        AccountStatusFragment.SetValuesToTextViews(dbHome.getStarting(Month, Year), dbHome.getRunning(Month, Year),
+        SetValuesToTextViews(dbHome.getStarting(Month, Year), dbHome.getRunning(Month, Year),
                 dbHome.getIncomes(Month, Year), dbHome.getExpenses(Month, Year),
                 dbHome.getSavings(Month, Year), dbHome.getBudget(Month, Year));
 
@@ -99,6 +127,14 @@ public class AccountStatusFragment extends Fragment implements AdapterView.OnIte
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    private boolean YearNotAlready(String year) {
+        for (int i = 0; i < listYear.size(); i++) {
+            if (listYear.get(i).equals(year))
+                return false;
+        }
+        return true;
     }
 
     public String GetMonthNumberFromMonth(String month) {

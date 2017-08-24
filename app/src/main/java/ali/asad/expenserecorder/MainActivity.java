@@ -37,6 +37,8 @@ import ali.asad.expenserecorder.Status.AccountStatusFragment;
 import ali.asad.expenserecorder.Status.StatusDBhelper;
 import ali.asad.expenserecorder.Status.StatusTabFragment;
 import ali.asad.expenserecorder.Status.ViewPagerAdapter;
+import ali.asad.expenserecorder.Status.YearlyExpenseFragment;
+import ali.asad.expenserecorder.Status.YearlyIncomeFragment;
 import ali.asad.expenserecorder.Status.YearlySummaryFragment;
 
 
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     StatusTabFragment statusTabFragment = new StatusTabFragment();
     AccountStatusFragment accountStatusFragment = new AccountStatusFragment();
     YearlySummaryFragment yearlySummaryFragment = new YearlySummaryFragment();
+    YearlyExpenseFragment yearlyExpenseFragment = new YearlyExpenseFragment();
+    YearlyIncomeFragment yearlyIncomeFragment = new YearlyIncomeFragment();
 
     public static ViewPagerAdapter viewPagerAdapter;
     public static Boolean first = true;
@@ -72,8 +76,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         *For Status Tab Fragment
          */
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragments(accountStatusFragment, "Account Status");
         viewPagerAdapter.addFragments(yearlySummaryFragment, "Yearly Summary");
+        viewPagerAdapter.addFragments(yearlyExpenseFragment, "Yearly Expenses");
+        viewPagerAdapter.addFragments(yearlyIncomeFragment, "Yearly Incomes");
 
         /*
         * Following Code handles the navigation drawer and its touch event.
@@ -132,6 +137,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.status_menu:
+                if (!accountStatusFragment.isVisible()) {
+                    fragmentManager = getFragmentManager();
+                    fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragmentPlace, accountStatusFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+                break;
+            case R.id.summary_menu:
                 if (!statusTabFragment.isVisible()) {
                     fragmentManager = getFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();

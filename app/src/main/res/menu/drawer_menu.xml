@@ -15,6 +15,11 @@
                     android:title="Wallet Status"
                     android:icon="@drawable/ic_assignment_black_48dp">
                 </item>
+                <item
+                    android:id="@+id/summary_menu"
+                    android:title="Yearly Summary"
+                    android:icon="@drawable/ic_equalizer_black_48dp">
+                </item>
             </menu>
         </item>
     </group>

@@ -23,7 +23,7 @@
             android:textColor="#000"
             android:textStyle="bold"/>
         <Spinner
-            android:id="@+id/yearSpinnerSummary"
+            android:id="@+id/yearSpinnerSummaryIncome"
             android:layout_width="1dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
     </LinearLayout>
 
     <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/pieChart"
+        android:id="@+id/pieChartIncome"
         android:layout_width="match_parent"
         android:layout_height= "match_parent"/>
 
