@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         *For Status Tab Fragment
          */
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragments(yearlySummaryFragment, "Yearly Summary");
         viewPagerAdapter.addFragments(yearlyExpenseFragment, "Yearly Expenses");
+        viewPagerAdapter.addFragments(yearlySummaryFragment, "Yearly Summary");
         viewPagerAdapter.addFragments(yearlyIncomeFragment, "Yearly Incomes");
 
         /*
@@ -114,6 +114,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.replace(R.id.fragmentPlace, homeFragment);
         fragmentTransaction.disallowAddToBackStack();
         fragmentTransaction.commit();
+    }
+
+    public void RandomExpensesAdder(){
+        ExpenseDBhelper dbExpense = new ExpenseDBhelper(this);
+
     }
 
     /*
@@ -208,11 +213,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (getTitle().equals("Expense Categories")
-                || getTitle().equals("Expenses")
-                || getTitle().equals("Incomes")) {
+        if (getTitle().equals("Expense Categories")) {
             menu.clear();
-            getMenuInflater().inflate(R.menu.menu_show, menu);
+            getMenuInflater().inflate(R.menu.menu_show_category, menu);
+        } else if (getTitle().equals("Expenses")) {
+            menu.clear();
+            getMenuInflater().inflate(R.menu.menu_show_expense, menu);
+        } else if (getTitle().equals("Incomes")) {
+            menu.clear();
+            getMenuInflater().inflate(R.menu.menu_show_income, menu);
         } else {
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -244,6 +253,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (showCategoryFragment.isVisible())
                 showCategoryFragment.onClearCategories();
 
+        } else if (id == R.id.arrange_expense_category) {
+            showExpenseFragment.MakeListByCategories();
+        } else if (id == R.id.arrange_expense_day) {
+            showExpenseFragment.MakeListByDates();
+        } else if (id == R.id.arrange_income_day) {
+            showIncomeFragment.MakeListByDates();
         } else if (id == R.id.about) {
             Toast.makeText(this, "Make a info dialog", Toast.LENGTH_SHORT).show();
         }
@@ -301,10 +316,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /*
+    * This method is called when we press the WalletStatus button in the home
+    * fragment and it opens up the AccountStatusFragment
+     */
+    public void onStatus(View view) {
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentPlace, accountStatusFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    /*
     * This method is called when we press the OverallStatus button in the home
     * fragment and it opens up the StatusTabFragment
      */
-    public void onStatus(View view) {
+    public void onSummary(View view) {
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -475,9 +503,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     int starting = Integer.parseInt(ValueStartingBalance);
                     int incomes = dbStatus.getIncomes(month, year);
                     int expenses = dbStatus.getExpenses(month, year);
-                    int running = starting+incomes-expenses;
+                    int running = starting + incomes - expenses;
                     int savings = dbStatus.getSavings(month, year);
-                    int budget = dbStatus.getBudget(month,year);
+                    int budget = dbStatus.getBudget(month, year);
 
                     dbStatus.insertOrAlterEntry(month, year, starting, running, incomes, expenses, savings, budget);
 
@@ -536,6 +564,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     @Override
     public void onBackPressed() {
+        if (statusTabFragment.isVisible()) {
+            StatusTabFragment.tabLayout.setScrollPosition(1, 0f, true);
+            StatusTabFragment.viewPager.setCurrentItem(1);
+        }
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
         } else {

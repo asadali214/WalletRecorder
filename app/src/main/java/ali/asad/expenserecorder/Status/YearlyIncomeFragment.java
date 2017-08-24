@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -41,11 +42,13 @@ public class YearlyIncomeFragment extends Fragment implements AdapterView.OnItem
         year = (Spinner) rootView.findViewById(R.id.yearSpinnerSummaryIncome);
         year.setAdapter(adpYear);
         year.setOnItemSelectedListener(this);
-        year.setSelection(StatusTabFragment.SelectionPosition);
 
         return rootView;
     }
     private void setUpPieChart() {
+        Description description=  new Description();
+        description.setText("");
+        pieChart.setDescription(description);
         StatusDBhelper db = new StatusDBhelper(getActivity());
         List<PieEntry> pieEntries = new ArrayList<>();
         for (int i = 0; i < months.length; i++) {
@@ -66,12 +69,11 @@ public class YearlyIncomeFragment extends Fragment implements AdapterView.OnItem
         pieChart.setData(data);
         pieChart.animateY(1000);
         pieChart.invalidate();
-        pieChart.setRotationEnabled(false);
+
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        StatusTabFragment.SelectionPosition = year.getSelectedItemPosition();
         setUpPieChart();
     }
 

@@ -27,9 +27,9 @@ public class StatusTabFragment extends Fragment {
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
     public static View rootView;
+    TabLayout.Tab tab;
 
     static ArrayAdapter<String> adpYear;
-    static int SelectionPosition=0;
 
     List<String> listYear;
 
@@ -72,17 +72,17 @@ public class StatusTabFragment extends Fragment {
             * They will need to be created only once for the first time
              */
             tabLayout.setupWithViewPager(viewPager);
+            tabLayout.setScrollPosition(1,0f,true);
+            viewPager.setCurrentItem(1);
         }
         else{
             /*
             * All the other times when this fragment is created we only
             * set the changed data to the fields and spinners of the tabbed fragments
              */
-
             YearlySummaryFragment.year.setAdapter(adpYear);
             YearlyExpenseFragment.year.setAdapter(adpYear);
             YearlyIncomeFragment.year.setAdapter(adpYear);
-
         }
         MainActivity.first = false;
         return rootView;

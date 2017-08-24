@@ -170,6 +170,13 @@ public class ExpenseShowFragment extends Fragment {
         deleteListID = new ArrayList<String>();
     }
 
+    public void MakeListByCategories(){
+
+    }
+    public void MakeListByDates(){
+
+    }
+
     public void onClearExpenses() {
         ExpenseDBhelper db = new ExpenseDBhelper(getActivity());
         SQLiteDatabase dbWrite = db.getWritableDatabase();

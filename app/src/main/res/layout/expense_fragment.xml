@@ -18,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:text="Date:"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:textColor="#000"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,7 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:text="Detail:"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:textColor="#000"/>
 
         <EditText
             android:id="@+id/ETdetail"
@@ -67,7 +69,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:text="Amount:"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:textColor="#000"/>
 
         <EditText
             android:id="@+id/ETamount"
@@ -83,7 +86,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:text="Category:"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:textColor="#000"/>
 
         <LinearLayout
             android:layout_width="match_parent"

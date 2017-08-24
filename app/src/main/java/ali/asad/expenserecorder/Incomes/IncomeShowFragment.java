@@ -167,6 +167,10 @@ public class IncomeShowFragment extends Fragment {
         deleteListID = new ArrayList<String>();
     }
 
+    public void MakeListByDates(){
+
+    }
+
     public void onClearIncomes() {
         IncomeDBhelper db = new IncomeDBhelper(getActivity());
         SQLiteDatabase dbWrite = db.getWritableDatabase();

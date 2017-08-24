@@ -186,7 +186,7 @@
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_marginLeft="10dp"
-                        android:background="@drawable/ic_mode_edit_black_48dp"
+                        android:background="@drawable/ic_mode_edit_color_48dp"
                         android:onClick="onStartingBalance" />
                 </LinearLayout>
 
@@ -305,15 +305,11 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                    <Button
-                        android:id="@+id/Bexpense"
+                    <ImageButton
                         android:layout_width="50dp"
-                        android:layout_height="70dp"
+                        android:layout_height="50dp"
                         android:onClick="onAddExpense"
-                        android:text="+"
-                        android:textColor="#000000"
-                        android:textSize="30dp"
-                        android:textStyle="bold" />
+                        android:background="@drawable/ic_add_red_48dp"/>
 
                 </LinearLayout>
 
@@ -337,34 +333,72 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
-                    <Button
-                        android:id="@+id/Bincome"
+                    <ImageButton
                         android:layout_width="50dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="50dp"
                         android:onClick="onAddIncome"
-                        android:text="+"
-                        android:textColor="#000000"
-                        android:textSize="30dp"
-                        android:textStyle="bold" />
+                        android:background="@drawable/ic_add_green_48dp"/>
 
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/border_black">
+                android:layout_marginBottom="25dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-                <Button
-                    android:layout_width="200dp"
-                    android:layout_height="50dp"
-                    android:onClick="onStatus"
-                    android:text="Overall Status"
-                    android:textColor="#000000"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/border_black"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:onClick="onStatus"
+                        android:background="@drawable/ic_assignment_color_48dp"/>
+                    <Button
+                        android:layout_width="110dp"
+                        android:layout_height="70dp"
+                        android:onClick="onStatus"
+                        android:text="Wallet Status"
+                        android:textColor="#000000"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/border_black"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:onClick="onSummary"
+                        android:background="@drawable/ic_equalizer_color_48dp"/>
+                    <Button
+                        android:layout_width="110dp"
+                        android:layout_height="70dp"
+                        android:onClick="onSummary"
+                        android:text="Yearly\nSummary"
+                        android:textColor="#000000"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
