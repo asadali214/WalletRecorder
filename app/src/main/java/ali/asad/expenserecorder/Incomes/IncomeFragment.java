@@ -61,7 +61,7 @@ public class IncomeFragment extends Fragment {
 
             int starting;
             Calendar cal = Calendar.getInstance();
-            int monthS = cal.get(Calendar.MONTH);
+            int monthS = cal.get(Calendar.MONTH)+1;
             int yearS = cal.get(Calendar.YEAR);
             if(monthS == Integer.parseInt(month) && yearS == Integer.parseInt(year)) {
                 //As the starting balance of current month can be changed by user
