@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import ali.asad.expenserecorder.Expenses.ExpenseDBhelper;
-import ali.asad.expenserecorder.Incomes.IncomeDBhelper;
 import ali.asad.expenserecorder.MainActivity;
 import ali.asad.expenserecorder.R;
 
@@ -72,8 +70,8 @@ public class StatusTabFragment extends Fragment {
             * They will need to be created only once for the first time
              */
             tabLayout.setupWithViewPager(viewPager);
-            tabLayout.setScrollPosition(1,0f,true);
-            viewPager.setCurrentItem(1);
+            tabLayout.setScrollPosition(0,0f,true);
+            viewPager.setCurrentItem(0);
         }
         else{
             /*
@@ -82,7 +80,7 @@ public class StatusTabFragment extends Fragment {
              */
             YearlySummaryFragment.year.setAdapter(adpYear);
             YearlyExpenseFragment.year.setAdapter(adpYear);
-            YearlyIncomeFragment.year.setAdapter(adpYear);
+            YearlyRunningFragment.year.setAdapter(adpYear);
         }
         MainActivity.first = false;
         return rootView;

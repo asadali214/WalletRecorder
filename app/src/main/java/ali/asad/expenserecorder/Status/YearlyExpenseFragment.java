@@ -36,6 +36,12 @@ import static ali.asad.expenserecorder.Status.StatusTabFragment.adpYear;
 public class YearlyExpenseFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     String months[] = {"January", "February", "March", "April", "May",
             "June", "July", "August", "September", "October", "November", "December"};
+    int[] colors = {
+            Color.rgb(193, 37, 82), Color.rgb(255, 102, 0), Color.rgb(245, 199, 0),
+            Color.rgb(106, 150, 31),Color.rgb(38, 205, 171),Color.rgb(171, 38, 205),
+            Color.rgb(223, 41, 199),Color.rgb(41, 59, 223),Color.rgb(255, 178, 202),
+            Color.rgb(179, 100, 53),Color.rgb(77, 198, 16),Color.rgb(204, 153, 0),
+    };
     PieChart pieChart;
     public static Spinner year;
     boolean onCategory = true;
@@ -60,6 +66,7 @@ public class YearlyExpenseFragment extends Fragment implements AdapterView.OnIte
         Description description = new Description();
         description.setText("");
         pieChart.setDescription(description);
+        //lineChart.setHighlightPerTapEnabled(false);
         pieChart.setRotationEnabled(false);
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
 
@@ -78,25 +85,25 @@ public class YearlyExpenseFragment extends Fragment implements AdapterView.OnIte
                     List<String> list = db.getCategoriesOfAllEntries();
                     String Category = list.get(position);
                     setUpPieChartForMonths(Category);
-
-                    pieChart.highlightValue(null);
                     onCategory=false;
                 }
             }
 
             @Override
             public void onNothingSelected() {
-                if(!onCategory) {
+                if(!onCategory){
+                    onCategory=true;
                     setUpPieChartForCategories();
-                    onCategory= true;
                 }
             }
+
         });
         return rootView;
     }
 
     private void setUpPieChartForMonths(String Category) {
-
+        pieChart.getOnTouchListener().setLastHighlighted(null);
+        pieChart.highlightValue(null);
         ExpenseDBhelper db = new ExpenseDBhelper(getActivity());
         List<PieEntry> pieEntries = new ArrayList<>();
         for (int i = 0; i < months.length; i++) {
@@ -113,9 +120,9 @@ public class YearlyExpenseFragment extends Fragment implements AdapterView.OnIte
             }
         }
 
-        PieDataSet dataset = new PieDataSet(pieEntries, "Expenses in "+Category
-                +" for all the Months of Year " + year.getSelectedItem());
-        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
+        PieDataSet dataset = new PieDataSet(pieEntries, "Expenses for "+Category
+                +" in each month of Year " + year.getSelectedItem());
+        dataset.setColors(colors);
         dataset.setValueTextSize(13f);
         dataset.setSliceSpace(2);
 
@@ -142,8 +149,8 @@ public class YearlyExpenseFragment extends Fragment implements AdapterView.OnIte
                 pieEntries.add(entry);
             }
         }
-        PieDataSet dataset = new PieDataSet(pieEntries, "Expenses for all Categories of Year " + year.getSelectedItem());
-        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
+        PieDataSet dataset = new PieDataSet(pieEntries, "Expenses for each category of Year " + year.getSelectedItem());
+        dataset.setColors(colors);
         dataset.setValueTextSize(13f);
         dataset.setSliceSpace(2);
 

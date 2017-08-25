@@ -40,7 +40,7 @@ import ali.asad.expenserecorder.Status.StatusDBhelper;
 import ali.asad.expenserecorder.Status.StatusTabFragment;
 import ali.asad.expenserecorder.Status.ViewPagerAdapter;
 import ali.asad.expenserecorder.Status.YearlyExpenseFragment;
-import ali.asad.expenserecorder.Status.YearlyIncomeFragment;
+import ali.asad.expenserecorder.Status.YearlyRunningFragment;
 import ali.asad.expenserecorder.Status.YearlySummaryFragment;
 
 
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     AccountStatusFragment accountStatusFragment = new AccountStatusFragment();
     YearlySummaryFragment yearlySummaryFragment = new YearlySummaryFragment();
     YearlyExpenseFragment yearlyExpenseFragment = new YearlyExpenseFragment();
-    YearlyIncomeFragment yearlyIncomeFragment = new YearlyIncomeFragment();
+    YearlyRunningFragment yearlyRunningFragment = new YearlyRunningFragment();
 
     public static ViewPagerAdapter viewPagerAdapter;
     public static Boolean first = true;
@@ -78,9 +78,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         *For Status Tab Fragment
          */
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragments(yearlyExpenseFragment, "Yearly Expenses");
+
         viewPagerAdapter.addFragments(yearlySummaryFragment, "Yearly Summary");
-        viewPagerAdapter.addFragments(yearlyIncomeFragment, "Yearly Incomes");
+        viewPagerAdapter.addFragments(yearlyExpenseFragment, "Overall Expenses");
+        viewPagerAdapter.addFragments(yearlyRunningFragment, "Running Balances");
 
         /*
         * Following Code handles the navigation drawer and its touch event.
@@ -129,56 +130,56 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void RandomEntriesAdder(String year) {
         Random random = new Random();
 
-        ExpenseDBhelper dbExpense =new ExpenseDBhelper(this);
-        dbExpense.onUpgrade(dbExpense.getWritableDatabase(),1,1);
+        ExpenseDBhelper dbExpense = new ExpenseDBhelper(this);
+        dbExpense.onUpgrade(dbExpense.getWritableDatabase(), 1, 1);
 
         IncomeDBhelper dbIncome = new IncomeDBhelper(this);
-        dbIncome.onUpgrade(dbIncome.getWritableDatabase(),1,1);
+        dbIncome.onUpgrade(dbIncome.getWritableDatabase(), 1, 1);
 
-        StatusDBhelper dbHome=new StatusDBhelper(this);
-        dbHome.onUpgrade(dbHome.getWritableDatabase(),1,1);
+        StatusDBhelper dbHome = new StatusDBhelper(this);
+        dbHome.onUpgrade(dbHome.getWritableDatabase(), 1, 1);
 
         CategoryDBhelper dbCat = new CategoryDBhelper(this);
 
 
-
         for (int i = 1; i <= 12; i++) {//months loop
             String month;
-            if(i<10)
-                month="0"+i;
+            if (i < 10)
+                month = "0" + i;
             else
-                month=""+i;
-
-            List<String[]> list =dbCat.getAllEntries();
+                month = "" + i;
+            if (i == 1)
+                dbHome.insertOrAlterEntry(month, year, 90000, 0, 0, 0, 0, 0);
+            List<String[]> list = dbCat.getAllEntries();
             for (int j = 0; j < list.size(); j++) {//Categories Loop
-                int day = 10 +random.nextInt(20);
-                String Date= month+"-"+day+"-"+year;
+                int day = 10 + random.nextInt(20);
+                String Date = month + "-" + day + "-" + year;
                 int n;
 
                 //Adding expenses
                 n = 1000 + random.nextInt(8999);
-                String Category=list.get(j)[1];
-                dbExpense.insertEntry(Date,""+n,""+n,Category);
+                String Category = list.get(j)[1];
+                dbExpense.insertEntry(Date, "" + n, "" + n, Category);
                 int starting = dbHome.getStarting(month, year);
-                int incomes =dbHome.getIncomes(month,year);
-                int expenses =dbHome.getExpenses(month,year)+n;
-                int running =starting+incomes-expenses;
-                int savings =incomes-expenses;
-                int budget =dbHome.getBudget(month,year);
-                dbHome.insertOrAlterEntry(month,year,starting,running,incomes,expenses,savings,budget);
+                int incomes = dbHome.getIncomes(month, year);
+                int expenses = dbHome.getExpenses(month, year) + n;
+                int running = starting + incomes - expenses;
+                int savings = incomes - expenses;
+                int budget = dbHome.getBudget(month, year);
+                dbHome.insertOrAlterEntry(month, year, starting, running, incomes, expenses, savings, budget);
 
                 //Adding incomes
                 n = 1000 + random.nextInt(8999);
-                dbIncome.insertEntry(Date,""+n,""+n);
+                dbIncome.insertEntry(Date, "" + n, "" + n);
                 starting = dbHome.getStarting(month, year);
-                incomes =dbHome.getIncomes(month,year)+n;
-                expenses =dbHome.getExpenses(month,year);
-                running =starting+incomes-expenses;
-                savings =incomes-expenses;
-                budget =dbHome.getBudget(month,year);
-                dbHome.insertOrAlterEntry(month,year,starting,running,incomes,expenses,savings,budget);
+                incomes = dbHome.getIncomes(month, year) + n;
+                expenses = dbHome.getExpenses(month, year);
+                running = starting + incomes - expenses;
+                savings = incomes - expenses;
+                budget = dbHome.getBudget(month, year);
+                dbHome.insertOrAlterEntry(month, year, starting, running, incomes, expenses, savings, budget);
             }
-            
+
         }
 
     }
@@ -627,8 +628,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
         if (statusTabFragment.isVisible()) {
-            StatusTabFragment.tabLayout.setScrollPosition(1, 0f, true);
-            StatusTabFragment.viewPager.setCurrentItem(1);
+            StatusTabFragment.tabLayout.setScrollPosition(0, 0f, true);
+            StatusTabFragment.viewPager.setCurrentItem(0);
         }
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();

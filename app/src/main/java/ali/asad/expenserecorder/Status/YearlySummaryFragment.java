@@ -121,8 +121,8 @@ public class YearlySummaryFragment extends Fragment implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         setUpBarChart();
-        YearlyIncomeFragment.year.setSelection(year.getSelectedItemPosition());
-        YearlyExpenseFragment.year.setSelection(year.getSelectedItemPosition());
+        //YearlyRunningFragment.year.setSelection(year.getSelectedItemPosition());
+        //YearlyExpenseFragment.year.setSelection(year.getSelectedItemPosition());
     }
 
     @Override
