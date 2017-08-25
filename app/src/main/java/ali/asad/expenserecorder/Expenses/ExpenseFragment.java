@@ -92,7 +92,7 @@ public class ExpenseFragment extends Fragment {
                 starting =dbHome.getRunning(getPrevMonth(month), getPrevYear(month,year));
             }
             int incomes =dbHome.getIncomes(month,year);
-            int expenses =dbHome.getExpenses(month,year)+Integer.parseInt(amount.getText().toString());;
+            int expenses =dbHome.getExpenses(month,year)+Integer.parseInt(amount.getText().toString());
             int running =starting+incomes-expenses;
             int savings =incomes-expenses;
             int budget =dbHome.getBudget(month,year);

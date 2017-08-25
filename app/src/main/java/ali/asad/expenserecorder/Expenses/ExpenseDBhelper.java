@@ -100,6 +100,83 @@ public class ExpenseDBhelper extends SQLiteOpenHelper {
         return list;
     }
 
+    public List<String> getCategoriesOfAllEntries() {
+        List<String> list = new ArrayList<>();
+        SQLiteDatabase dbRead = getReadableDatabase();
+        String[] projection = {
+                "DISTINCT " + ExpenseEntry.COLUMN_NAME_CATEGORY,
+        };
+        String orderBy = ExpenseEntry.COLUMN_NAME_CATEGORY;
+
+        Cursor cursor = dbRead.query(
+                ExpenseEntry.TABLE_NAME,                // The table to query >>TABLE_NAME
+                projection,                             // The columns to return >>projection
+                null,                                   // The columns for the WHERE clause >>whereClause
+                null,                                   // The values for the WHERE clause >>whereArgs
+                null,                                   // group the rows
+                null,                                   // filter by row groups
+                orderBy                                 // The sort order >>orderBy
+        );
+        while (cursor.moveToNext()) {
+            String cat = cursor.getString(0);
+            list.add(cat);
+        }
+        cursor.close();
+        return list;
+    }
+
+    public int getExpensesOfCategory(String category) {
+        int sum = 0;
+        SQLiteDatabase dbRead = getReadableDatabase();
+        String[] projection = {ExpenseEntry.COLUMN_NAME_AMOUNT};
+        String whereClause = ExpenseEntry.COLUMN_NAME_CATEGORY + " = ? ";
+        String[] whereArgs = new String[]{category};
+        Cursor cursor = dbRead.query(
+                ExpenseEntry.TABLE_NAME,                // The table to query >>TABLE_NAME
+                projection,                             // The columns to return >>projection
+                whereClause,                            // The columns for the WHERE clause >>whereClause
+                whereArgs,                              // The values for the WHERE clause >>whereArgs
+                null,                                   // group the rows
+                null,                                   // filter by row groups
+                null                                    // The sort order >>orderBy
+        );
+
+        while (cursor.moveToNext()) {
+            sum += cursor.getInt(0);
+        }
+        return sum;
+    }
+
+    public int getExpensesOf(String Category, String Month, String Year) {
+        int sum = 0;
+
+        SQLiteDatabase dbRead = getReadableDatabase();
+        String[] projection = {
+                ExpenseEntry.COLUMN_NAME_AMOUNT
+        };
+        String whereClause = ExpenseEntry.COLUMN_NAME_DATE + " LIKE ? AND "
+                +ExpenseEntry.COLUMN_NAME_CATEGORY +"= ?";
+        String[] whereArgs = new String[]{
+                Month + "-%-" + Year,Category
+        };
+        String orderBy = ExpenseEntry.COLUMN_NAME_DATE;
+
+        Cursor cursor = dbRead.query(
+                ExpenseEntry.TABLE_NAME,                // The table to query >>TABLE_NAME
+                projection,                             // The columns to return >>projection
+                whereClause,                            // The columns for the WHERE clause >>whereClause
+                whereArgs,                              // The values for the WHERE clause >>whereArgs
+                null,                                   // group the rows
+                null,                                   // filter by row groups
+                orderBy                                 // The sort order >>orderBy
+        );
+        while (cursor.moveToNext()) {
+            sum += cursor.getInt(0);
+        }
+        cursor.close();
+        return sum;
+    }
+
     public List<String[]> getAllEntriesOf(String Month, String Year) {
         List<String[]> list = new ArrayList<>();
 

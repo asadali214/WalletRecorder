@@ -22,6 +22,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.List;
+import java.util.Random;
 
 import ali.asad.expenserecorder.Categories.CategoryDBhelper;
 import ali.asad.expenserecorder.Categories.CategoryFragment;
@@ -114,10 +116,70 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.replace(R.id.fragmentPlace, homeFragment);
         fragmentTransaction.disallowAddToBackStack();
         fragmentTransaction.commit();
+
+        //RandomEntriesAdder("2017");
     }
 
-    public void RandomExpensesAdder(){
-        ExpenseDBhelper dbExpense = new ExpenseDBhelper(this);
+
+    /*
+    * ****ONLY FOR TESTING PURPOSES****
+    * This method add random income and expense entries into
+    * the database in a given year
+     */
+    public void RandomEntriesAdder(String year) {
+        Random random = new Random();
+
+        ExpenseDBhelper dbExpense =new ExpenseDBhelper(this);
+        dbExpense.onUpgrade(dbExpense.getWritableDatabase(),1,1);
+
+        IncomeDBhelper dbIncome = new IncomeDBhelper(this);
+        dbIncome.onUpgrade(dbIncome.getWritableDatabase(),1,1);
+
+        StatusDBhelper dbHome=new StatusDBhelper(this);
+        dbHome.onUpgrade(dbHome.getWritableDatabase(),1,1);
+
+        CategoryDBhelper dbCat = new CategoryDBhelper(this);
+
+
+
+        for (int i = 1; i <= 12; i++) {//months loop
+            String month;
+            if(i<10)
+                month="0"+i;
+            else
+                month=""+i;
+
+            List<String[]> list =dbCat.getAllEntries();
+            for (int j = 0; j < list.size(); j++) {//Categories Loop
+                int day = 10 +random.nextInt(20);
+                String Date= month+"-"+day+"-"+year;
+                int n;
+
+                //Adding expenses
+                n = 1000 + random.nextInt(8999);
+                String Category=list.get(j)[1];
+                dbExpense.insertEntry(Date,""+n,""+n,Category);
+                int starting = dbHome.getStarting(month, year);
+                int incomes =dbHome.getIncomes(month,year);
+                int expenses =dbHome.getExpenses(month,year)+n;
+                int running =starting+incomes-expenses;
+                int savings =incomes-expenses;
+                int budget =dbHome.getBudget(month,year);
+                dbHome.insertOrAlterEntry(month,year,starting,running,incomes,expenses,savings,budget);
+
+                //Adding incomes
+                n = 1000 + random.nextInt(8999);
+                dbIncome.insertEntry(Date,""+n,""+n);
+                starting = dbHome.getStarting(month, year);
+                incomes =dbHome.getIncomes(month,year)+n;
+                expenses =dbHome.getExpenses(month,year);
+                running =starting+incomes-expenses;
+                savings =incomes-expenses;
+                budget =dbHome.getBudget(month,year);
+                dbHome.insertOrAlterEntry(month,year,starting,running,incomes,expenses,savings,budget);
+            }
+            
+        }
 
     }
 
