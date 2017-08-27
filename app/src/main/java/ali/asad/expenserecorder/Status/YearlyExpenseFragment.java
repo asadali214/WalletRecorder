@@ -101,6 +101,8 @@ public class YearlyExpenseFragment extends Fragment implements AdapterView.OnIte
             }
 
         });
+        StatusTabFragment.tabLayout.setScrollPosition(0,0f,true);
+        StatusTabFragment.viewPager.setCurrentItem(0);
         return rootView;
     }
 

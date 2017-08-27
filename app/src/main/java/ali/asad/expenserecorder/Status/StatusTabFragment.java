@@ -70,8 +70,8 @@ public class StatusTabFragment extends Fragment {
             * They will need to be created only once for the first time
              */
             tabLayout.setupWithViewPager(viewPager);
-            tabLayout.setScrollPosition(0,0f,true);
-            viewPager.setCurrentItem(0);
+            tabLayout.setScrollPosition(1,0f,true);
+            viewPager.setCurrentItem(1);
         }
         else{
             /*

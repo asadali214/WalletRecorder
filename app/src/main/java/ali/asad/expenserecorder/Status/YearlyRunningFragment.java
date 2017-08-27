@@ -80,7 +80,6 @@ public class YearlyRunningFragment extends Fragment implements AdapterView.OnIte
         dataset.setValueTextSize(13f);
 
         lineChart.getLegend().setTextSize(12f);
-        lineChart.getLegend().setWordWrapEnabled(true);
         lineChart.getLegend().setForm(Legend.LegendForm.LINE);
         lineChart.getLegend().setWordWrapEnabled(true);
         LineData data = new LineData(dataset);
@@ -93,6 +92,7 @@ public class YearlyRunningFragment extends Fragment implements AdapterView.OnIte
         lineChart.setDescription(description);
 
         XAxis xval = lineChart.getXAxis();
+        xval.setPosition(XAxis.XAxisPosition.BOTTOM);
         xval.setDrawLabels(true);
         xval.setTextSize(12f);
         xval.setValueFormatter(new IAxisValueFormatter() {
@@ -106,6 +106,9 @@ public class YearlyRunningFragment extends Fragment implements AdapterView.OnIte
         yRight.setDrawGridLines(false);
         YAxis yLeft = lineChart.getAxisLeft();
         yLeft.setDrawGridLines(false);
+
+        Calendar cal = Calendar.getInstance();
+        lineChart.moveViewToX((cal.get(Calendar.MONTH) * 2)-7);
 
         lineChart.invalidate();
 

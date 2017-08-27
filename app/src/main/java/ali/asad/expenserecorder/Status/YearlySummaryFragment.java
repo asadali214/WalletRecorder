@@ -22,6 +22,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import ali.asad.expenserecorder.R;
@@ -34,9 +35,9 @@ import static ali.asad.expenserecorder.Status.StatusTabFragment.adpYear;
 
 public class YearlySummaryFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
-    String monthsLables[] = {"January", "↓", "", "February", "↓", "", "March", "↓", "", "April", "↓", "", "May"
-            , "↓", "", "June", "↓", "", "July", "↓", "", "August", "↓", "", "September", "↓", "",
-            "October", "↓", "", "November", "↓", "", "December", "↓", ""};
+    String monthsLables[] = {"January", "↑", "", "February", "↑", "", "March", "↑", "", "April", "↑", "", "May"
+            , "↑", "", "June", "↑", "", "July", "↑", "", "August", "↑", "", "September", "↑", "",
+            "October", "↑", "", "November", "↑", "", "December", "↑", ""};
     BarChart barChart;
     public static Spinner year;
 
@@ -52,6 +53,7 @@ public class YearlySummaryFragment extends Fragment implements AdapterView.OnIte
         year.setAdapter(adpYear);
         year.setOnItemSelectedListener(this);
         barChart.zoom(6, 1, 0, 0);
+
         return rootView;
     }
 
@@ -103,6 +105,7 @@ public class YearlySummaryFragment extends Fragment implements AdapterView.OnIte
         barChart.setDescription(description);
         barChart.setScaleEnabled(false);
         XAxis xval = barChart.getXAxis();
+        xval.setPosition(XAxis.XAxisPosition.BOTTOM);
         xval.setDrawLabels(true);
         xval.setTextSize(12f);
         xval.setValueFormatter(new IAxisValueFormatter() {
@@ -112,8 +115,12 @@ public class YearlySummaryFragment extends Fragment implements AdapterView.OnIte
             }
         });
         xval.setDrawGridLines(false);
-        YAxis yRight= barChart.getAxisRight();
+        YAxis yRight = barChart.getAxisRight();
         yRight.setEnabled(false);
+
+        Calendar cal = Calendar.getInstance();
+        barChart.moveViewToX((cal.get(Calendar.MONTH) * 3)-1);
+
         barChart.invalidate();
 
     }
