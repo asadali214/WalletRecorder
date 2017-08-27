@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,7 +145,7 @@ public class StatusDBhelper extends SQLiteOpenHelper implements BaseColumns {
                     + " = '" + month + "' AND " + COLUMN_NAME_YEAR + " = '" + year + "'"
             );
         }
-        changeForRunning(month,year,running);
+        changeForRunning(month, year, running);
     }
 
     /*
@@ -152,10 +153,14 @@ public class StatusDBhelper extends SQLiteOpenHelper implements BaseColumns {
     * and also after inserting expenses or incomes in the table
     * simply calling it at the end of insertOrAlterEntry
      */
-    public void changeForRunning(String Month, String Year, int Running) {
+    public void changeForRunning(final String Month, final String Year, final int Run) {
+        //new Thread(new Runnable() {
+        // public void run() {
+        //System.out.println("RUNNING IN BACKGROUND...");
         boolean found = false;
         int SelectedMonthNum = Integer.parseInt(Month);
         int SelectedYearNum = Integer.parseInt(Year);
+        int Running = Run;
 
         SQLiteDatabase dbRead = getReadableDatabase();
         String[] projection = {
@@ -180,6 +185,7 @@ public class StatusDBhelper extends SQLiteOpenHelper implements BaseColumns {
                 orderBy                                    // The sort order >>orderBy
         );
         System.out.println("Month  Year  Starting  Running  Incomes  Expenses  Savings  Budget");
+
         while (cursor.moveToNext()) {
             String month = cursor.getString(0);
             String year = cursor.getString(1);
@@ -199,10 +205,11 @@ public class StatusDBhelper extends SQLiteOpenHelper implements BaseColumns {
                         running = starting + incomes - expenses;
 
                         SelectedMonthNum = monthNum;
-                        Running=running;
-
-                        insertOrAlterEntry(month,year,starting,running,incomes,expenses,savings,budget);
-
+                        Running = running;
+                        System.out.println(month + " " + year + " " + starting + " " + running + " "
+                                + incomes + " " + expenses + " " + savings + " " + budget);
+                        insertOrAlterEntry(month, year, starting, running, incomes, expenses, savings, budget);
+                        return;
                     }
                 } else {
                     if (yearNum == SelectedYearNum + 1 && monthNum == 1) {
@@ -212,21 +219,23 @@ public class StatusDBhelper extends SQLiteOpenHelper implements BaseColumns {
                         SelectedMonthNum = monthNum;
                         SelectedYearNum = yearNum;
                         Running = running;
-
-                        insertOrAlterEntry(month,year,starting,running,incomes,expenses,savings,budget);
-
+                        System.out.println(month + " " + year + " " + starting + " " + running + " "
+                                + incomes + " " + expenses + " " + savings + " " + budget);
+                        insertOrAlterEntry(month, year, starting, running, incomes, expenses, savings, budget);
+                        return;
                     }
                 }
-                System.out.println(month + " " + year + " " + starting + " " + running + " "
-                        + incomes + " " + expenses + " " + savings + " " + budget);
+
             }
 
             if (Month.equals(month) && Year.equals(year)) {
                 found = true;
             }
-
         }
         cursor.close();
+        //System.out.println("BACKGROUND TASK COMPLETED...");
+        //  }
+        // }).start();
 
     }
 

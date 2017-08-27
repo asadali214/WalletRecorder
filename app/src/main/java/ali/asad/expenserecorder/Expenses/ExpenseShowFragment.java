@@ -1,6 +1,7 @@
 package ali.asad.expenserecorder.Expenses;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,7 +31,7 @@ import ali.asad.expenserecorder.Status.StatusDBhelper;
 public class ExpenseShowFragment extends Fragment {
     ArrayList<HashMap<String, String>> list;
     RecyclerView recyclerView;
-    Spinner month, year;
+    public static Spinner month, year;
     View rootView;
 
     String months[] = {"All", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
@@ -39,6 +40,17 @@ public class ExpenseShowFragment extends Fragment {
 
     static OnSwipeTouchListener expenseSwipeListener;
     static List<String> deleteListID;
+    public static int currentYear=0;
+    public static int currentMonth;
+
+    /*
+    * onResume is called after onCreate View in fragments
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        month.setSelection(currentMonth);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +62,7 @@ public class ExpenseShowFragment extends Fragment {
         month = (Spinner) rootView.findViewById(R.id.monthSpinnerExpense);
         year = (Spinner) rootView.findViewById(R.id.yearSpinnerExpense);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.listViewExpense);
+        System.out.println("Expense Show: month>"+currentMonth+" year>"+currentYear);
 
         expenseSwipeListener = new OnSwipeTouchListener(getActivity()) {
             public void onSwipeLeft() {
@@ -86,13 +99,9 @@ public class ExpenseShowFragment extends Fragment {
                 //}
             }
         };
+
         listMonth = new ArrayList<String>();
         listYear = new ArrayList<String>();
-
-        Calendar cal = Calendar.getInstance();
-        int currentMonth = cal.get(Calendar.MONTH) + 1;//as jan=0 feb=1 mar=2 ...
-        int currentYear = cal.get(Calendar.YEAR);
-
 
         listYear.add("" + currentYear);
         for (int i = 0; i < months.length; i++) {
@@ -113,7 +122,6 @@ public class ExpenseShowFragment extends Fragment {
                 R.layout.spinner_layout_text, listYear);
 
         month.setAdapter(adpMonth);
-        month.setSelection(currentMonth);
         month.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -125,10 +133,12 @@ public class ExpenseShowFragment extends Fragment {
 
             }
         });
+
         year.setAdapter(adpYear);
         year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
                 MakeList();
             }
 
@@ -137,6 +147,7 @@ public class ExpenseShowFragment extends Fragment {
 
             }
         });
+
         MakeList();
         return rootView;
     }
@@ -174,6 +185,7 @@ public class ExpenseShowFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         deleteListID = new ArrayList<String>();
+
     }
 
     public void MakeListByCategories(){

@@ -67,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ActionBarDrawerToggle actionBarDrawerToggle;
     NavigationView navigationView;
 
+    /*
+    * This method will be called whenever we start the application Wallet Recorder
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //RandomEntriesAdder("2017");
     }
-
 
     /*
     * ****ONLY FOR TESTING PURPOSES****
@@ -195,13 +197,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.home_menu:
                 if (!homeFragment.isVisible()) {
-                    fragmentManager = getFragmentManager();
-                    FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
-                    /*
-                    * on opening the home fragment the following code pops all the back stack
-                    * entries until the "first" entry is on top of the stack
-                    */
-                    fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    removeTillHome();
                 }
                 break;
             case R.id.status_menu:
@@ -224,6 +220,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.Income_menu:
                 if (!showIncomeFragment.isVisible()) {
+                    Calendar cal = Calendar.getInstance();
+                    int currentMonth = cal.get(Calendar.MONTH) + 1;//as jan=0 feb=1 mar=2 ...
+                    int currentYear = cal.get(Calendar.YEAR);
+                    IncomeShowFragment.currentMonth = currentMonth;
+                    IncomeShowFragment.currentYear = currentYear;
                     fragmentManager = getFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragmentPlace, showIncomeFragment);
@@ -233,6 +234,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.Expense_menu:
                 if (!showExpenseFragment.isVisible()) {
+                    Calendar cal = Calendar.getInstance();
+                    int currentMonth = cal.get(Calendar.MONTH) + 1;//as jan=0 feb=1 mar=2 ...
+                    int currentYear = cal.get(Calendar.YEAR);
+                    ExpenseShowFragment.currentMonth = currentMonth;
+                    ExpenseShowFragment.currentYear = currentYear;
                     fragmentManager = getFragmentManager();
                     fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragmentPlace, showExpenseFragment);
@@ -256,6 +262,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         drawerLayout.closeDrawers();
         return false;
+    }
+
+    /*
+    * on opening the home fragment the following code pops all the back stack
+    * entries until the "first" entry is on top of the stack
+    */
+    public void removeTillHome() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
+        fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     /*
@@ -285,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (getTitle().equals("Incomes")) {
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_show_income, menu);
-        }else if (getTitle().equals("Add Expenses") ||getTitle().equals("Add Incomes") ||getTitle().equals("Add Categories")) {
+        } else if (getTitle().equals("Add Expenses") || getTitle().equals("Add Incomes") || getTitle().equals("Add Categories")) {
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_adding, menu);
         } else {
@@ -319,12 +335,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (showCategoryFragment.isVisible())
                 showCategoryFragment.onClearCategories();
 
-        }else if (id == R.id.adding) {
+        } else if (id == R.id.adding) {
 
             if (expenseFragment.isVisible())
-                expenseFragment.onGoExpense();
+                onGoExpense();
             if (incomeFragment.isVisible())
-                incomeFragment.onGoIncome();
+                onGoIncome();
             if (categoryFragment.isVisible())
                 categoryFragment.onGoCatgory();
 
@@ -435,13 +451,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     * and it opens up the ExpenseShowFragment
      */
     public void onShowExpense(View view) {
-
+        if (view != null) {
+            Calendar cal = Calendar.getInstance();
+            int currentMonth = cal.get(Calendar.MONTH) + 1;//as jan=0 feb=1 mar=2 ...
+            int currentYear = cal.get(Calendar.YEAR);
+            ExpenseShowFragment.currentMonth = currentMonth;
+            ExpenseShowFragment.currentYear = currentYear;
+        }
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //RemoveAllFragments(fragmentTransaction);
         fragmentTransaction.replace(R.id.fragmentPlace, showExpenseFragment);//move to show expense fragment
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+        //System.out.println(">"+showExpenseFragment.isVisible());
+        //ExpenseShowFragment.month.setSelection(ExpenseShowFragment.currentMonth);
     }
 
     /*
@@ -462,6 +486,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
    * and it opens up the IncomeShowFragment
     */
     public void onShowIncome(View view) {
+        if (view != null) {
+            Calendar cal = Calendar.getInstance();
+            int currentMonth = cal.get(Calendar.MONTH) + 1;//as jan=0 feb=1 mar=2 ...
+            int currentYear = cal.get(Calendar.YEAR);
+            IncomeShowFragment.currentMonth = currentMonth;
+            IncomeShowFragment.currentYear = currentYear;
+        }
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //RemoveAllFragments(fragmentTransaction);
@@ -607,6 +638,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     public void onMoreOrLess(View view) {
         homeFragment.onMoreOrLess();
+    }
+
+    /*
+    * First it enters the data in database then calls the show Expense Fragment
+     */
+    public void onGoExpense() {
+        if(expenseFragment.onGoExpense()) {
+            getFragmentManager().popBackStack();
+            if (getFragmentManager().getBackStackEntryCount() == 1) {
+                onShowExpense(null);
+
+            }
+        }
+    }
+
+    /*
+    * First it enters the data in database then calls the show Income Fragment
+     */
+    public void onGoIncome() {
+        if(incomeFragment.onGoIncome()) {
+            getFragmentManager().popBackStack();
+            if (getFragmentManager().getBackStackEntryCount() == 1) {
+                onShowIncome(null);
+            }
+        }
     }
 
     /*

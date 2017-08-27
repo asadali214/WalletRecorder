@@ -287,7 +287,7 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="70dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
@@ -297,9 +297,10 @@
 
                     <Button
                         android:id="@+id/BShowexpense"
-                        android:layout_width="120dp"
-                        android:layout_height="70dp"
+                        android:layout_width="110dp"
+                        android:layout_height="60dp"
                         android:onClick="onShowExpense"
+                        android:background="@drawable/box_round_left"
                         android:text="EXPENSES&#10;8000"
                         android:textColor="#000000"
                         android:textSize="15dp"
@@ -315,7 +316,7 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="70dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
@@ -325,9 +326,10 @@
 
                     <Button
                         android:id="@+id/BShowincome"
-                        android:layout_width="120dp"
-                        android:layout_height="70dp"
+                        android:layout_width="110dp"
+                        android:layout_height="60dp"
                         android:onClick="onShowIncome"
+                        android:background="@drawable/box_round_left"
                         android:text="INCOMES&#10;40000"
                         android:textColor="#000000"
                         android:textSize="15dp"
@@ -351,7 +353,7 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="70dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
@@ -365,9 +367,10 @@
                         android:onClick="onStatus"
                         android:background="@drawable/ic_assignment_color_48dp"/>
                     <Button
-                        android:layout_width="110dp"
-                        android:layout_height="70dp"
+                        android:layout_width="100dp"
+                        android:layout_height="60dp"
                         android:onClick="onStatus"
+                        android:background="@drawable/box_round_right"
                         android:text="Wallet Status"
                         android:textColor="#000000"
                         android:textSize="15dp"
@@ -377,7 +380,7 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="70dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
@@ -391,9 +394,10 @@
                         android:onClick="onSummary"
                         android:background="@drawable/ic_equalizer_color_48dp"/>
                     <Button
-                        android:layout_width="110dp"
-                        android:layout_height="70dp"
+                        android:layout_width="100dp"
+                        android:layout_height="60dp"
                         android:onClick="onSummary"
+                        android:background="@drawable/box_round_right"
                         android:text="Yearly\nSummary"
                         android:textColor="#000000"
                         android:textSize="15dp"

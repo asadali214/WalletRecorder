@@ -54,6 +54,7 @@ public class YearlySummaryFragment extends Fragment implements AdapterView.OnIte
         year.setOnItemSelectedListener(this);
         barChart.zoom(6, 1, 0, 0);
 
+
         return rootView;
     }
 
@@ -96,14 +97,17 @@ public class YearlySummaryFragment extends Fragment implements AdapterView.OnIte
         barChart.getLegend().setTextSize(12f);
         barChart.getLegend().setForm(Legend.LegendForm.CIRCLE);
         barChart.setData(data);
+
         barChart.animateY(1000);
         barChart.setFitBars(true);
-
         barChart.setBackgroundColor(Color.WHITE);
         Description description = new Description();
         description.setText("");
         barChart.setDescription(description);
         barChart.setScaleEnabled(false);
+
+        Calendar cal = Calendar.getInstance();
+        barChart.moveViewToX((cal.get(Calendar.MONTH) * 3)-4);
         XAxis xval = barChart.getXAxis();
         xval.setPosition(XAxis.XAxisPosition.BOTTOM);
         xval.setDrawLabels(true);
@@ -118,9 +122,6 @@ public class YearlySummaryFragment extends Fragment implements AdapterView.OnIte
         YAxis yRight = barChart.getAxisRight();
         yRight.setEnabled(false);
 
-        Calendar cal = Calendar.getInstance();
-        barChart.moveViewToX((cal.get(Calendar.MONTH) * 3)-1);
-
         barChart.invalidate();
 
     }
@@ -128,8 +129,6 @@ public class YearlySummaryFragment extends Fragment implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         setUpBarChart();
-        //YearlyRunningFragment.year.setSelection(year.getSelectedItemPosition());
-        //YearlyExpenseFragment.year.setSelection(year.getSelectedItemPosition());
     }
 
     @Override

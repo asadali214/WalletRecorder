@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import ali.asad.expenserecorder.Expenses.ExpenseShowFragment;
 import ali.asad.expenserecorder.Status.StatusDBhelper;
 import ali.asad.expenserecorder.R;
 
@@ -38,7 +39,10 @@ public class IncomeFragment extends Fragment {
         return rootView;
     }
 
-    public void onGoIncome() {
+    public boolean onGoIncome() {
+        Calendar cal = Calendar.getInstance();
+        int monthS = cal.get(Calendar.MONTH)+1;
+        int yearS = cal.get(Calendar.YEAR);
         //checks on edit texts shouldn't be empty
         //date check
         //amount check
@@ -60,9 +64,7 @@ public class IncomeFragment extends Fragment {
             String year = GetYearNumber(Date);
 
             int starting;
-            Calendar cal = Calendar.getInstance();
-            int monthS = cal.get(Calendar.MONTH)+1;
-            int yearS = cal.get(Calendar.YEAR);
+
             if(monthS == Integer.parseInt(month) && yearS == Integer.parseInt(year)) {
                 //As the starting balance of current month can be changed by user
                 starting = dbHome.getStarting(month, year);
@@ -78,9 +80,16 @@ public class IncomeFragment extends Fragment {
             int budget = dbHome.getBudget(month, year);
             dbHome.insertOrAlterEntry(month, year, starting, running, incomes, expenses, savings, budget);
 
+            IncomeShowFragment.currentMonth=Integer.parseInt(month);
+            IncomeShowFragment.currentYear = Integer.parseInt(year);
+            Toast.makeText(getActivity(), "Income added!", Toast.LENGTH_SHORT).show();
+            detail.setText("");
+            amount.setText("");
+            return true;
         }
         detail.setText("");
         amount.setText("");
+        return false;
     }
 
 

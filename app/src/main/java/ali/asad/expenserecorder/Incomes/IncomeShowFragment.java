@@ -38,6 +38,14 @@ public class IncomeShowFragment extends Fragment {
 
     static OnSwipeTouchListener incomeSwipeListener;
     static List<String> deleteListID;
+    public static int currentYear=0;
+    public static int currentMonth;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        month.setSelection(currentMonth);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +56,9 @@ public class IncomeShowFragment extends Fragment {
         month = (Spinner) rootView.findViewById(R.id.monthSpinnerIncome);
         year = (Spinner) rootView.findViewById(R.id.yearSpinnerIncome);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.listViewIncome);
+
+        System.out.println("Income Show: month>"+currentMonth+" year>"+currentYear);
+
         incomeSwipeListener = new OnSwipeTouchListener(getActivity()) {
             public void onSwipeLeft() {
                 /*LinearLayoutManager lm =(LinearLayoutManager) recyclerView.getLayoutManager();
@@ -85,10 +96,6 @@ public class IncomeShowFragment extends Fragment {
 
         listMonth = new ArrayList<String>();
         listYear = new ArrayList<String>();
-        Calendar cal = Calendar.getInstance();
-        int currentMonth = cal.get(Calendar.MONTH) + 1;//as jan=0 feb=1 mar=2 ...
-        int currentYear = cal.get(Calendar.YEAR);
-
 
         listYear.add("" + currentYear);
         for (int i = 0; i < months.length; i++) {
@@ -107,12 +114,13 @@ public class IncomeShowFragment extends Fragment {
         ArrayAdapter<String> adpYear = new ArrayAdapter<String>(getActivity().getApplicationContext(),
                 R.layout.spinner_layout_text, listYear);
 
+
         month.setAdapter(adpMonth);
-        month.setSelection(currentMonth);
         month.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 MakeList();
+
             }
 
             @Override
@@ -120,11 +128,13 @@ public class IncomeShowFragment extends Fragment {
 
             }
         });
+
         year.setAdapter(adpYear);
         year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 MakeList();
+
             }
 
             @Override
@@ -140,7 +150,6 @@ public class IncomeShowFragment extends Fragment {
     public void MakeList() {
 
         list = new ArrayList<HashMap<String, String>>();
-        System.out.println("ID Date Detail Amount");
         IncomeDBhelper db = new IncomeDBhelper(getActivity());
         List<String[]> incomeList;
         if (!month.getSelectedItem().toString().equals("All"))
@@ -161,7 +170,7 @@ public class IncomeShowFragment extends Fragment {
             temp.put(IncomeRecyclerViewAdapter.FOURTH_COLUMN, id);
 
             list.add(temp);
-            System.out.println(id + " " + date + " " + detail + " " + amount);
+            //System.out.println(id + " " + date + " " + detail + " " + amount);
         }
 
         IncomeRecyclerViewAdapter adapter = new IncomeRecyclerViewAdapter(getActivity(), list);

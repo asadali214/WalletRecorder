@@ -40,7 +40,6 @@ public class ExpenseFragment extends Fragment {
 
         date.setEnabled(false);
 
-        System.out.println("ExpenseFragment Created");
         List<String> list = new ArrayList<String>();
         CategoryDBhelper db = new CategoryDBhelper(getActivity());
         List<String[]> categoryList = db.getAllEntries();
@@ -55,10 +54,14 @@ public class ExpenseFragment extends Fragment {
         return rootView;
     }
 
-    public void onGoExpense() {
+    public boolean onGoExpense() {
+        Calendar cal = Calendar.getInstance();
+        int monthS = cal.get(Calendar.MONTH) + 1;
+        int yearS = cal.get(Calendar.YEAR);
         //checks on edit texts shouldn't be empty
         //date check
         //amount check
+
         xyz:
         {
             if (!fieldCheck()) {
@@ -72,36 +75,39 @@ public class ExpenseFragment extends Fragment {
             String Detail = detail.getText().toString();
             String Amount = amount.getText().toString();
             String Category = category.getSelectedItem().toString();
-            ExpenseDBhelper db =new ExpenseDBhelper(getActivity());
-            db.insertEntry(Date,Detail,Amount,Category);
+            ExpenseDBhelper db = new ExpenseDBhelper(getActivity());
+            db.insertEntry(Date, Detail, Amount, Category);
 
-            StatusDBhelper dbHome=new StatusDBhelper(getActivity());
-            String month =GetMonthNumber(Date);
+            StatusDBhelper dbHome = new StatusDBhelper(getActivity());
+            String month = GetMonthNumber(Date);
             String year = GetYearNumber(Date);
 
             int starting;
-            Calendar cal = Calendar.getInstance();
-            int monthS = cal.get(Calendar.MONTH)+1;
-            int yearS = cal.get(Calendar.YEAR);
-            if(monthS == Integer.parseInt(month) && yearS == Integer.parseInt(year)) {
+
+            if (monthS == Integer.parseInt(month) && yearS == Integer.parseInt(year)) {
                 //As the starting balance of current month can be changed by user
                 starting = dbHome.getStarting(month, year);
-            }
-            else{
+            } else {
                 //Get Running of previous month for the starting of this month if its not current month
-                starting =dbHome.getRunning(getPrevMonth(month), getPrevYear(month,year));
+                starting = dbHome.getRunning(getPrevMonth(month), getPrevYear(month, year));
             }
-            int incomes =dbHome.getIncomes(month,year);
-            int expenses =dbHome.getExpenses(month,year)+Integer.parseInt(amount.getText().toString());
-            int running =starting+incomes-expenses;
-            int savings =incomes-expenses;
-            int budget =dbHome.getBudget(month,year);
-            dbHome.insertOrAlterEntry(month,year,starting,running,incomes,expenses,savings,budget);
+            int incomes = dbHome.getIncomes(month, year);
+            int expenses = dbHome.getExpenses(month, year) + Integer.parseInt(amount.getText().toString());
+            int running = starting + incomes - expenses;
+            int savings = incomes - expenses;
+            int budget = dbHome.getBudget(month, year);
+            dbHome.insertOrAlterEntry(month, year, starting, running, incomes, expenses, savings, budget);
 
+            ExpenseShowFragment.currentMonth = Integer.parseInt(month);
+            ExpenseShowFragment.currentYear = Integer.parseInt(year);
             Toast.makeText(getActivity().getApplicationContext(), "Expense added!", Toast.LENGTH_SHORT).show();
+            detail.setText("");
+            amount.setText("");
+            return true;
         }
         detail.setText("");
         amount.setText("");
+        return false;
     }
 
     public boolean fieldCheck() {

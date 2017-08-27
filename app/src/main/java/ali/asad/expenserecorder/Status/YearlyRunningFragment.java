@@ -90,6 +90,8 @@ public class YearlyRunningFragment extends Fragment implements AdapterView.OnIte
         Description description = new Description();
         description.setText("");
         lineChart.setDescription(description);
+        Calendar cal = Calendar.getInstance();
+        lineChart.moveViewToX((cal.get(Calendar.MONTH) * 2)-7);
 
         XAxis xval = lineChart.getXAxis();
         xval.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -107,8 +109,6 @@ public class YearlyRunningFragment extends Fragment implements AdapterView.OnIte
         YAxis yLeft = lineChart.getAxisLeft();
         yLeft.setDrawGridLines(false);
 
-        Calendar cal = Calendar.getInstance();
-        lineChart.moveViewToX((cal.get(Calendar.MONTH) * 2)-7);
 
         lineChart.invalidate();
 
