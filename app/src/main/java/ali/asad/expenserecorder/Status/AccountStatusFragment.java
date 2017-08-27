@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -32,9 +34,10 @@ public class AccountStatusFragment extends Fragment implements AdapterView.OnIte
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.status_account_fragment, container, false);
+        final View rootView = inflater.inflate(R.layout.status_account_fragment, container, false);
         System.out.println("Account Status Opened");
 
+        final LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.main_status_view);
         StartingBalance = (TextView) rootView.findViewById(R.id.startingBalance);
         Income = (TextView) rootView.findViewById(R.id.income);
         TotalExpenses = (TextView) rootView.findViewById(R.id.expenses);
@@ -79,14 +82,17 @@ public class AccountStatusFragment extends Fragment implements AdapterView.OnIte
 
         rootView.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
             public void onSwipeLeft() {
+                linearLayout.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.swipe_to_left));
                 if (month.getSelectedItemPosition() + 1 < months.length-1) {
                     int newPosition = month.getSelectedItemPosition() + 1;
                     month.setSelection(newPosition);
                 }
                 else
                     month.setSelection(0);
+
             }
             public void onSwipeRight() {
+                linearLayout.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.swipe_to_right));
                 if (month.getSelectedItemPosition() - 1 >= 0) {
                     int newPosition = month.getSelectedItemPosition() - 1;
                     month.setSelection(newPosition);

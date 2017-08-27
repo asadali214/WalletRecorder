@@ -41,7 +41,7 @@ public class CategoryFragment extends Fragment {
         return rootView;
     }
 
-    public void onGoCatgory(View view) {
+    public void onGoCatgory() {
         //Apply All Checks
 
         if (!category.getText().toString().equals("") && checkAlreadyPresent()) {
@@ -50,10 +50,13 @@ public class CategoryFragment extends Fragment {
             String Icon = ""+icons[iconSpinner.getSelectedItemPosition()];
             CategoryDBhelper db = new CategoryDBhelper(getActivity());
             db.insertEntry(Category,Icon);
-            Toast.makeText(getActivity().getApplicationContext(), "A new category added!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Category: "+Category+" is added!",
+                    Toast.LENGTH_SHORT).show();
+            getActivity().onBackPressed();
         } else
             Toast.makeText(getActivity().getApplicationContext(), "Please insert correct data", Toast.LENGTH_SHORT).show();
         category.setText("");
+
 
     }
 

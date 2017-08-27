@@ -1,6 +1,7 @@
 package ali.asad.expenserecorder.Status;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -74,13 +75,14 @@ public class YearlyRunningFragment extends Fragment implements AdapterView.OnIte
             lineEntries.add(entry);
         }
 
-        LineDataSet dataset = new LineDataSet(lineEntries, "Running Balances of Year " + year.getSelectedItem());
+        LineDataSet dataset = new LineDataSet(lineEntries, "Balance at the end of each Month in Year " + year.getSelectedItem());
         dataset.setColors(Color.BLUE);
         dataset.setValueTextSize(13f);
 
         lineChart.getLegend().setTextSize(12f);
         lineChart.getLegend().setWordWrapEnabled(true);
-        lineChart.getLegend().setForm(Legend.LegendForm.CIRCLE);
+        lineChart.getLegend().setForm(Legend.LegendForm.LINE);
+        lineChart.getLegend().setWordWrapEnabled(true);
         LineData data = new LineData(dataset);
         lineChart.setData(data);
 

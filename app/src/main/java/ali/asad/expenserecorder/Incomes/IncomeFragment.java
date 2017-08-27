@@ -38,7 +38,7 @@ public class IncomeFragment extends Fragment {
         return rootView;
     }
 
-    public void onGoIncome(View view) {
+    public void onGoIncome() {
         //checks on edit texts shouldn't be empty
         //date check
         //amount check

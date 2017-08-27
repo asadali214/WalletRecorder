@@ -285,6 +285,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (getTitle().equals("Incomes")) {
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_show_income, menu);
+        }else if (getTitle().equals("Add Expenses") ||getTitle().equals("Add Incomes") ||getTitle().equals("Add Categories")) {
+            menu.clear();
+            getMenuInflater().inflate(R.menu.menu_adding, menu);
         } else {
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -315,6 +318,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 showIncomeFragment.onClearIncomes();
             if (showCategoryFragment.isVisible())
                 showCategoryFragment.onClearCategories();
+
+        }else if (id == R.id.adding) {
+
+            if (expenseFragment.isVisible())
+                expenseFragment.onGoExpense();
+            if (incomeFragment.isVisible())
+                incomeFragment.onGoIncome();
+            if (categoryFragment.isVisible())
+                categoryFragment.onGoCatgory();
 
         } else if (id == R.id.arrange_expense_category) {
             showExpenseFragment.MakeListByCategories();
@@ -595,30 +607,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     public void onMoreOrLess(View view) {
         homeFragment.onMoreOrLess();
-    }
-
-    /*
-    * This will call the onGoExpense method of expense fragment which is used to add
-    * the current expense in the database
-     */
-    public void onGoExpense(View view) {
-        expenseFragment.onGoExpense(view);
-    }
-
-    /*
-    * This will call the onGoIncome method of income fragment which is used to add
-    * the current income in the database
-     */
-    public void onGoIncome(View view) {
-        incomeFragment.onGoIncome(view);
-    }
-
-    /*
-    * This will call the onGoCategory method of category fragment which is used to add
-    * the current expense category in the database.
-     */
-    public void onGoCategory(View view) {
-        categoryFragment.onGoCatgory(view);
     }
 
     /*

@@ -55,7 +55,7 @@ public class ExpenseFragment extends Fragment {
         return rootView;
     }
 
-    public void onGoExpense(View view) {
+    public void onGoExpense() {
         //checks on edit texts shouldn't be empty
         //date check
         //amount check

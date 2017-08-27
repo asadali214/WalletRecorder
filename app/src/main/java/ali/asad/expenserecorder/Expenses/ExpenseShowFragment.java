@@ -5,9 +5,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -57,11 +59,13 @@ public class ExpenseShowFragment extends Fragment {
                         (lm.findLastCompletelyVisibleItemPosition() == recyclerView.getAdapter().getItemCount() - 1 &&
                                 recyclerView.getChildAt(recyclerView.getChildCount() - 1).getBottom() <= recyclerView.getHeight())) {
                     //It is scrolled all the way down*/
+                recyclerView.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.swipe_to_left));
                 if (month.getSelectedItemPosition() + 1 < months.length) {
                     int newPosition = month.getSelectedItemPosition() + 1;
                     month.setSelection(newPosition);
                 } else
                     month.setSelection(0);
+
                 //}
             }
 
@@ -72,11 +76,13 @@ public class ExpenseShowFragment extends Fragment {
                         (lm.findFirstCompletelyVisibleItemPosition() == 0 &&
                                 recyclerView.getChildAt(0).getTop() >= 0)) {
                     //It is scrolled all the way up*/
+                recyclerView.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.swipe_to_right));
                 if (month.getSelectedItemPosition() - 1 >= 0) {
                     int newPosition = month.getSelectedItemPosition() - 1;
                     month.setSelection(newPosition);
                 } else
                     month.setSelection(months.length - 1);
+
                 //}
             }
         };

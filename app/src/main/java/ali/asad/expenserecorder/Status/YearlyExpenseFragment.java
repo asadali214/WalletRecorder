@@ -1,6 +1,7 @@
 package ali.asad.expenserecorder.Status;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -79,6 +81,7 @@ public class YearlyExpenseFragment extends Fragment implements AdapterView.OnIte
                     String Month = months[position];
                     System.out.println("Month: " + Month);
                     System.out.println("Value: " + Amount);
+                    Toast.makeText(getActivity(), "Expenses in "+Month+": "+Amount, Toast.LENGTH_SHORT).show();
                 }
                 else {
                     ExpenseDBhelper db = new ExpenseDBhelper(getActivity());
@@ -124,7 +127,7 @@ public class YearlyExpenseFragment extends Fragment implements AdapterView.OnIte
                 +" in each month of Year " + year.getSelectedItem());
         dataset.setColors(colors);
         dataset.setValueTextSize(13f);
-        dataset.setSliceSpace(2);
+        dataset.setSliceSpace(1);
 
         PieData data = new PieData(dataset);
         pieChart.setData(data);
@@ -152,7 +155,7 @@ public class YearlyExpenseFragment extends Fragment implements AdapterView.OnIte
         PieDataSet dataset = new PieDataSet(pieEntries, "Expenses for each category of Year " + year.getSelectedItem());
         dataset.setColors(colors);
         dataset.setValueTextSize(13f);
-        dataset.setSliceSpace(2);
+        dataset.setSliceSpace(1);
 
         PieData data = new PieData(dataset);
         pieChart.setData(data);
