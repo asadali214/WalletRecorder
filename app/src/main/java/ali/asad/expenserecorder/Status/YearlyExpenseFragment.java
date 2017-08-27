@@ -101,8 +101,6 @@ public class YearlyExpenseFragment extends Fragment implements AdapterView.OnIte
             }
 
         });
-        StatusTabFragment.tabLayout.setScrollPosition(0,0f,true);
-        StatusTabFragment.viewPager.setCurrentItem(0);
         return rootView;
     }
 
@@ -172,6 +170,8 @@ public class YearlyExpenseFragment extends Fragment implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         setUpPieChartForCategories();
+        YearlyRunningFragment.year.setSelection(year.getSelectedItemPosition());
+        YearlySummaryFragment.year.setSelection(year.getSelectedItemPosition());
     }
 
 

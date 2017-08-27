@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
          */
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        viewPagerAdapter.addFragments(yearlySummaryFragment, "Yearly Summary");
+        viewPagerAdapter.addFragments(yearlySummaryFragment, "Income & Expenses");
         viewPagerAdapter.addFragments(yearlyExpenseFragment, "Overall Expenses");
         viewPagerAdapter.addFragments(yearlyRunningFragment, "Running Balances");
 
@@ -616,8 +616,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
         if (statusTabFragment.isVisible()) {
-            StatusTabFragment.tabLayout.setScrollPosition(0, 0f, true);
-            StatusTabFragment.viewPager.setCurrentItem(0);
+            StatusTabFragment.tabLayout.setScrollPosition(1, 0f, true);
+            StatusTabFragment.viewPager.setCurrentItem(1);
         }
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
