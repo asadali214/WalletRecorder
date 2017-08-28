@@ -22,7 +22,7 @@
         android:layout_marginRight="10dp"
         android:layout_height="1dp"
         android:gravity="center"
-        android:inputType="numberSigned"
+        android:inputType="number"
         android:textSize="20dp"
         android:hint="Enter New Budget Amount..."
         android:background="@drawable/box3"

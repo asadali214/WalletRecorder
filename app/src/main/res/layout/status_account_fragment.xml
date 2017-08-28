@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@drawable/border_black"
+            android:background="@drawable/border_silver"
             android:gravity="center_horizontal|center_vertical"
             android:orientation="horizontal">
             <TextView
@@ -47,7 +47,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@drawable/border_black"
+            android:background="@drawable/border_silver"
             android:gravity="center_horizontal|center_vertical"
             android:orientation="horizontal">
             <TextView

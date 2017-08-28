@@ -22,7 +22,7 @@ import ali.asad.expenserecorder.R;
  * Created by AsadAli on 12-Jul-17.
  */
 
-public class ExpenseFragment extends Fragment {
+public class ExpenseAddFragment extends Fragment {
     public static EditText date;
     EditText detail, amount;//expense table entries
     Spinner category; //expense table entries

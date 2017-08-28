@@ -18,7 +18,7 @@ import ali.asad.expenserecorder.R;
  * Created by AsadAli on 12-Jul-17.
  */
 
-public class IncomeFragment extends Fragment {
+public class IncomeAddFragment extends Fragment {
     public static EditText date;
     EditText detail, amount;//income table entries
 
@@ -34,7 +34,7 @@ public class IncomeFragment extends Fragment {
 
         date.setEnabled(false);
 
-        System.out.println("IncomeFragment Created");
+        System.out.println("IncomeAddFragment Created");
 
         return rootView;
     }

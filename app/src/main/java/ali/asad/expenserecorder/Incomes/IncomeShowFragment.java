@@ -119,7 +119,12 @@ public class IncomeShowFragment extends Fragment {
         month.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                MakeList();
+                if (getActivity().getTitle().equals("Incomes")) {
+                    MakeList();
+                }
+                if (getActivity().getTitle().equals("Incomes By Date")) {
+                    MakeListByDates();
+                }
 
             }
 
@@ -133,7 +138,12 @@ public class IncomeShowFragment extends Fragment {
         year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                MakeList();
+                if (getActivity().getTitle().equals("Incomes")) {
+                    MakeList();
+                }
+                if (getActivity().getTitle().equals("Incomes By Date")) {
+                    MakeListByDates();
+                }
 
             }
 
@@ -148,7 +158,7 @@ public class IncomeShowFragment extends Fragment {
     }
 
     public void MakeList() {
-
+        getActivity().setTitle("Incomes");
         list = new ArrayList<HashMap<String, String>>();
         IncomeDBhelper db = new IncomeDBhelper(getActivity());
         List<String[]> incomeList;
@@ -182,7 +192,7 @@ public class IncomeShowFragment extends Fragment {
     }
 
     public void MakeListByDates() {
-
+        getActivity().setTitle("Incomes By Date");
     }
 
     public void onClearIncomes() {

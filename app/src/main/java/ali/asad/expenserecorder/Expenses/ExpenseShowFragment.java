@@ -40,7 +40,7 @@ public class ExpenseShowFragment extends Fragment {
 
     static OnSwipeTouchListener expenseSwipeListener;
     static List<String> deleteListID;
-    public static int currentYear=0;
+    public static int currentYear = 0;
     public static int currentMonth;
 
     /*
@@ -62,8 +62,11 @@ public class ExpenseShowFragment extends Fragment {
         month = (Spinner) rootView.findViewById(R.id.monthSpinnerExpense);
         year = (Spinner) rootView.findViewById(R.id.yearSpinnerExpense);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.listViewExpense);
-        System.out.println("Expense Show: month>"+currentMonth+" year>"+currentYear);
+        System.out.println("Expense Show: month>" + currentMonth + " year>" + currentYear);
 
+        /*
+        * Listener for swipe event.
+         */
         expenseSwipeListener = new OnSwipeTouchListener(getActivity()) {
             public void onSwipeLeft() {
                 /*LinearLayoutManager lm =(LinearLayoutManager) recyclerView.getLayoutManager();
@@ -100,6 +103,29 @@ public class ExpenseShowFragment extends Fragment {
             }
         };
 
+        /*
+        * Listener for selection of spinners.
+         */
+        AdapterView.OnItemSelectedListener selectedListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (getActivity().getTitle().equals("Expenses")) {
+                    MakeList();
+                }
+                if (getActivity().getTitle().equals("Expenses By Category")) {
+                    MakeListByCategories();
+                }
+                if (getActivity().getTitle().equals("Expenses By Date")) {
+                    MakeListByDates();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        };
+
         listMonth = new ArrayList<String>();
         listYear = new ArrayList<String>();
 
@@ -122,37 +148,18 @@ public class ExpenseShowFragment extends Fragment {
                 R.layout.spinner_layout_text, listYear);
 
         month.setAdapter(adpMonth);
-        month.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                MakeList();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        month.setOnItemSelectedListener(selectedListener);
 
         year.setAdapter(adpYear);
-        year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                MakeList();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        year.setOnItemSelectedListener(selectedListener);
 
         MakeList();
         return rootView;
     }
 
     public void MakeList() {
+        getActivity().setTitle("Expenses");
+
         list = new ArrayList<HashMap<String, String>>();
         ExpenseDBhelper db = new ExpenseDBhelper(getActivity());
         List<String[]> expenseList;
@@ -188,10 +195,84 @@ public class ExpenseShowFragment extends Fragment {
 
     }
 
-    public void MakeListByCategories(){
+    public void MakeListByCategories() {
+        getActivity().setTitle("Expenses By Category");
+
+        list = new ArrayList<HashMap<String, String>>();
+        ExpenseDBhelper db = new ExpenseDBhelper(getActivity());
+
+        if (!month.getSelectedItem().toString().equals("All")) {//"All" is NOT selected
+            List<String> categoriesList = db.getCategoriesOf(GetMonthNumberFromMonth(month.getSelectedItem().toString()),
+                    year.getSelectedItem().toString());
+            for (int i = 0; i < categoriesList.size(); i++) {
+                String category = categoriesList.get(i);
+                int expenses = db.getExpensesOf(category,
+                        GetMonthNumberFromMonth(month.getSelectedItem().toString()),
+                        year.getSelectedItem().toString());
+                HashMap<String, String> temp = new HashMap<String, String>();//temp for recyclerView
+                temp.put(ExpenseRecyclerViewAdapterCat.FIRST_COLUMN,category);
+                temp.put(ExpenseRecyclerViewAdapterCat.SECOND_COLUMN,""+expenses);
+                list.add(temp);
+            }
+
+
+        } else {//"All" is selected
+            List<String> categoriesList = db.getCategoriesOfAllEntries();
+            for (int i = 0; i < categoriesList.size(); i++) {
+                String category = categoriesList.get(i);
+                int expenses = db.getExpensesOf(category,
+                        year.getSelectedItem().toString());
+                HashMap<String, String> temp = new HashMap<String, String>();//temp for recyclerView
+                temp.put(ExpenseRecyclerViewAdapterCat.FIRST_COLUMN,category);
+                temp.put(ExpenseRecyclerViewAdapterCat.SECOND_COLUMN,""+expenses);
+                list.add(temp);
+            }
+
+        }
+
+        ExpenseRecyclerViewAdapterCat adapter = new ExpenseRecyclerViewAdapterCat(getActivity(), list);
+        recyclerView.setOnTouchListener(expenseSwipeListener);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
     }
-    public void MakeListByDates(){
+
+    public void MakeListByDates() {
+        getActivity().setTitle("Expenses By Date");
+
+        list = new ArrayList<HashMap<String, String>>();
+        ExpenseDBhelper db = new ExpenseDBhelper(getActivity());
+
+        if (!month.getSelectedItem().toString().equals("All")) {//"All" is NOT selected
+            List<String> dateList = db.getDateOf(GetMonthNumberFromMonth(month.getSelectedItem().toString()),
+                    year.getSelectedItem().toString());
+            for (int i = 0; i < dateList.size(); i++) {
+                String date = dateList.get(i);
+                int expenses = db.getExpensesOf(date);
+                HashMap<String, String> temp = new HashMap<String, String>();//temp for recyclerView
+                temp.put(ExpenseRecyclerViewAdapterCat.FIRST_COLUMN,months[Integer.parseInt(GetMonthNumber(date))] + " " + GetDayNumber(date));
+                temp.put(ExpenseRecyclerViewAdapterCat.SECOND_COLUMN,""+expenses);
+                list.add(temp);
+            }
+
+
+        } else {//"All" is selected
+            List<String> dateList = db.getDateOfAllEntries();
+            for (int i = 0; i < dateList.size(); i++) {
+                String date = dateList.get(i);
+                int expenses = db.getExpensesOf(date);
+                HashMap<String, String> temp = new HashMap<String, String>();//temp for recyclerView
+                temp.put(ExpenseRecyclerViewAdapterCat.FIRST_COLUMN, months[Integer.parseInt(GetMonthNumber(date))] + " " + GetDayNumber(date));
+                temp.put(ExpenseRecyclerViewAdapterCat.SECOND_COLUMN,""+expenses);
+                list.add(temp);
+            }
+
+        }
+
+        ExpenseRecyclerViewAdapterDate adapter = new ExpenseRecyclerViewAdapterDate(getActivity(), list);
+        recyclerView.setOnTouchListener(expenseSwipeListener);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
     }
 

@@ -28,12 +28,12 @@ import java.util.Random;
 import ali.asad.expenserecorder.Categories.CategoryDBhelper;
 import ali.asad.expenserecorder.Categories.CategoryFragment;
 import ali.asad.expenserecorder.Categories.CategoryShowFragment;
+import ali.asad.expenserecorder.Expenses.ExpenseAddFragment;
 import ali.asad.expenserecorder.Expenses.ExpenseDBhelper;
-import ali.asad.expenserecorder.Expenses.ExpenseFragment;
 import ali.asad.expenserecorder.Expenses.ExpenseShowFragment;
 import ali.asad.expenserecorder.Home.HomeFragment;
 import ali.asad.expenserecorder.Incomes.IncomeDBhelper;
-import ali.asad.expenserecorder.Incomes.IncomeFragment;
+import ali.asad.expenserecorder.Incomes.IncomeAddFragment;
 import ali.asad.expenserecorder.Incomes.IncomeShowFragment;
 import ali.asad.expenserecorder.Status.AccountStatusFragment;
 import ali.asad.expenserecorder.Status.StatusDBhelper;
@@ -47,8 +47,8 @@ import ali.asad.expenserecorder.Status.YearlySummaryFragment;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     HomeFragment homeFragment = new HomeFragment();
-    ExpenseFragment expenseFragment = new ExpenseFragment();
-    IncomeFragment incomeFragment = new IncomeFragment();
+    ExpenseAddFragment expenseAddFragment = new ExpenseAddFragment();
+    IncomeAddFragment incomeAddFragment = new IncomeAddFragment();
     CategoryFragment categoryFragment = new CategoryFragment();
     CategoryShowFragment showCategoryFragment = new CategoryShowFragment();
     IncomeShowFragment showIncomeFragment = new IncomeShowFragment();
@@ -304,6 +304,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (getTitle().equals("Add Expenses") || getTitle().equals("Add Incomes") || getTitle().equals("Add Categories")) {
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_adding, menu);
+        } else if (getTitle().equals("Expenses By Category")) {
+            menu.clear();
+            getMenuInflater().inflate(R.menu.menu_show_expense_by_category, menu);
+        } else if (getTitle().equals("Expenses By Date")) {
+            menu.clear();
+            getMenuInflater().inflate(R.menu.menu_show_expense_by_date, menu);
+        } else if (getTitle().equals("Incomes By Date")) {
+            menu.clear();
+            getMenuInflater().inflate(R.menu.menu_show_income_by_date, menu);
         } else {
             menu.clear();
             getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -337,23 +346,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.adding) {
 
-            if (expenseFragment.isVisible())
+            if (expenseAddFragment.isVisible())
                 onGoExpense();
-            if (incomeFragment.isVisible())
+            if (incomeAddFragment.isVisible())
                 onGoIncome();
             if (categoryFragment.isVisible())
                 categoryFragment.onGoCatgory();
 
         } else if (id == R.id.arrange_expense_category) {
             showExpenseFragment.MakeListByCategories();
+
         } else if (id == R.id.arrange_expense_day) {
             showExpenseFragment.MakeListByDates();
+
         } else if (id == R.id.arrange_income_day) {
             showIncomeFragment.MakeListByDates();
+
+        } else if (id == R.id.backToExpenses) {
+            showExpenseFragment.MakeList();
+
+        } else if (id == R.id.backToIncomes) {
+            showIncomeFragment.MakeList();
+
+        } else if (id == R.id.search_expense) {
+            Toast.makeText(this, "Make search expenses", Toast.LENGTH_SHORT).show();
+
+        } else if (id == R.id.search_income) {
+            Toast.makeText(this, "Make search incomes", Toast.LENGTH_SHORT).show();
+
         } else if (id == R.id.about) {
             Toast.makeText(this, "Make a info dialog", Toast.LENGTH_SHORT).show();
-        }
 
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -396,10 +420,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         else
                             Month = "" + month;
                         date = Month + "-" + Day + "-" + year;
-                        if (expenseFragment.isVisible())
-                            ExpenseFragment.date.setText(date);
-                        if (incomeFragment.isVisible())
-                            IncomeFragment.date.setText(date);
+                        if (expenseAddFragment.isVisible())
+                            ExpenseAddFragment.date.setText(date);
+                        if (incomeAddFragment.isVisible())
+                            IncomeAddFragment.date.setText(date);
                     }
                 }, yearS, monthS, dayS);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -434,14 +458,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     /*
     * This method is called when we press the AddExpense button in the home fragment
-    * and it opens up the ExpenseFragment
+    * and it opens up the ExpenseAddFragment
      */
     public void onAddExpense(View view) {
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //RemoveAllFragments(fragmentTransaction);
-        fragmentTransaction.replace(R.id.fragmentPlace, expenseFragment);
+        fragmentTransaction.replace(R.id.fragmentPlace, expenseAddFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -470,13 +494,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     /*
     * This method is called when we press the AddIncome button in the home fragment
-    * and it opens up the IncomeFragment
+    * and it opens up the IncomeAddFragment
      */
     public void onAddIncome(View view) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //RemoveAllFragments(fragmentTransaction);
-        fragmentTransaction.replace(R.id.fragmentPlace, incomeFragment);
+        fragmentTransaction.replace(R.id.fragmentPlace, incomeAddFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -502,7 +526,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /*
-    * This method is called when we press the addCategory button in the ExpenseFragment
+    * This method is called when we press the addCategory button in the ExpenseAddFragment
     * and it opens the CategoryFragment.
      */
     public void onAddCategory(View view) {
@@ -644,7 +668,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     * First it enters the data in database then calls the show Expense Fragment
      */
     public void onGoExpense() {
-        if(expenseFragment.onGoExpense()) {
+        if (expenseAddFragment.onGoExpense()) {
             getFragmentManager().popBackStack();
             if (getFragmentManager().getBackStackEntryCount() == 1) {
                 onShowExpense(null);
@@ -657,7 +681,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     * First it enters the data in database then calls the show Income Fragment
      */
     public void onGoIncome() {
-        if(incomeFragment.onGoIncome()) {
+        if (incomeAddFragment.onGoIncome()) {
             getFragmentManager().popBackStack();
             if (getFragmentManager().getBackStackEntryCount() == 1) {
                 onShowIncome(null);

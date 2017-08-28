@@ -248,7 +248,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/border_black"
+                android:background="@drawable/border_silver"
                 android:gravity="center"
                 android:onClick="onMoreOrLess"
                 android:orientation="horizontal">
@@ -291,14 +291,14 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/border_black"
+                    android:background="@drawable/border_silver"
                     android:gravity="center_horizontal|center_vertical"
                     android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/BShowexpense"
-                        android:layout_width="110dp"
-                        android:layout_height="60dp"
+                        android:layout_width="123dp"
+                        android:layout_height="70dp"
                         android:onClick="onShowExpense"
                         android:background="@drawable/box_round_left"
                         android:text="EXPENSES&#10;8000"
@@ -306,9 +306,15 @@
                         android:textSize="15dp"
                         android:textStyle="bold" />
 
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="70dp"
+                        android:layout_marginRight="1dp"
+                        android:background="#aaa" />
+
                     <ImageButton
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
                         android:onClick="onAddExpense"
                         android:background="@drawable/ic_add_red_48dp"/>
 
@@ -320,24 +326,29 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/border_black"
+                    android:background="@drawable/border_silver"
                     android:gravity="center_horizontal|center_vertical"
                     android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/BShowincome"
-                        android:layout_width="110dp"
-                        android:layout_height="60dp"
+                        android:layout_width="123dp"
+                        android:layout_height="70dp"
                         android:onClick="onShowIncome"
                         android:background="@drawable/box_round_left"
                         android:text="INCOMES&#10;40000"
                         android:textColor="#000000"
                         android:textSize="15dp"
                         android:textStyle="bold" />
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="70dp"
+                        android:layout_marginRight="1dp"
+                        android:background="#aaa" />
 
                     <ImageButton
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
                         android:onClick="onAddIncome"
                         android:background="@drawable/ic_add_green_48dp"/>
 
@@ -357,18 +368,23 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/border_black"
+                    android:background="@drawable/border_silver"
                     android:gravity="center_horizontal|center_vertical"
                     android:orientation="horizontal">
 
                     <ImageButton
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
                         android:onClick="onStatus"
                         android:background="@drawable/ic_assignment_color_48dp"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="1dp"
+                        android:background="#aaa" />
                     <Button
-                        android:layout_width="100dp"
-                        android:layout_height="60dp"
+                        android:layout_width="113dp"
+                        android:layout_height="70dp"
                         android:onClick="onStatus"
                         android:background="@drawable/box_round_right"
                         android:text="Wallet Status"
@@ -384,18 +400,23 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/border_black"
+                    android:background="@drawable/border_silver"
                     android:gravity="center_horizontal|center_vertical"
                     android:orientation="horizontal">
 
                     <ImageButton
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
                         android:onClick="onSummary"
                         android:background="@drawable/ic_equalizer_color_48dp"/>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="1dp"
+                        android:background="#aaa" />
                     <Button
-                        android:layout_width="100dp"
-                        android:layout_height="60dp"
+                        android:layout_width="113dp"
+                        android:layout_height="70dp"
                         android:onClick="onSummary"
                         android:background="@drawable/box_round_right"
                         android:text="Yearly\nSummary"
