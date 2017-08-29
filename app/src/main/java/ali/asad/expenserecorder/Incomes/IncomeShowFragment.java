@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import ali.asad.expenserecorder.Expenses.ExpenseRecyclerViewAdapterDate;
 import ali.asad.expenserecorder.OnSwipeTouchListener;
 import ali.asad.expenserecorder.R;
 import ali.asad.expenserecorder.Status.StatusDBhelper;
@@ -59,6 +60,9 @@ public class IncomeShowFragment extends Fragment {
 
         System.out.println("Income Show: month>"+currentMonth+" year>"+currentYear);
 
+        /*
+        * Listener for swipe event.
+         */
         incomeSwipeListener = new OnSwipeTouchListener(getActivity()) {
             public void onSwipeLeft() {
                 /*LinearLayoutManager lm =(LinearLayoutManager) recyclerView.getLayoutManager();
@@ -94,6 +98,26 @@ public class IncomeShowFragment extends Fragment {
             }
         };
 
+        /*
+        * Listener for selection of spinners.
+         */
+        AdapterView.OnItemSelectedListener selectedListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (getActivity().getTitle().equals("Incomes")) {
+                    MakeList();
+                }
+                if (getActivity().getTitle().equals("Incomes By Date")) {
+                    MakeListByDates();
+                }
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        };
+
         listMonth = new ArrayList<String>();
         listYear = new ArrayList<String>();
 
@@ -116,42 +140,10 @@ public class IncomeShowFragment extends Fragment {
 
 
         month.setAdapter(adpMonth);
-        month.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (getActivity().getTitle().equals("Incomes")) {
-                    MakeList();
-                }
-                if (getActivity().getTitle().equals("Incomes By Date")) {
-                    MakeListByDates();
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        month.setOnItemSelectedListener(selectedListener);
 
         year.setAdapter(adpYear);
-        year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (getActivity().getTitle().equals("Incomes")) {
-                    MakeList();
-                }
-                if (getActivity().getTitle().equals("Incomes By Date")) {
-                    MakeListByDates();
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        year.setOnItemSelectedListener(selectedListener);
 
         MakeList();
         return rootView;
@@ -159,6 +151,7 @@ public class IncomeShowFragment extends Fragment {
 
     public void MakeList() {
         getActivity().setTitle("Incomes");
+
         list = new ArrayList<HashMap<String, String>>();
         IncomeDBhelper db = new IncomeDBhelper(getActivity());
         List<String[]> incomeList;
@@ -193,6 +186,37 @@ public class IncomeShowFragment extends Fragment {
 
     public void MakeListByDates() {
         getActivity().setTitle("Incomes By Date");
+
+        list = new ArrayList<HashMap<String, String>>();
+        IncomeDBhelper db = new IncomeDBhelper(getActivity());
+        if (!month.getSelectedItem().toString().equals("All")) {//"All" is NOT selected
+            List<String> dateList = db.getDateOf(GetMonthNumberFromMonth(month.getSelectedItem().toString()),
+                    year.getSelectedItem().toString());
+            for (int i = 0; i < dateList.size() ; i++) {
+                String date=dateList.get(i);
+                int incomes = db.getIncomesOf(date);
+                HashMap<String, String> temp = new HashMap<String, String>();//temp for recyclerView
+                temp.put(IncomeRecyclerViewAdapterDate.FIRST_COLUMN, months[Integer.parseInt(GetMonthNumber(date))] + " " + GetDayNumber(date));
+                temp.put(IncomeRecyclerViewAdapterDate.SECOND_COLUMN,""+incomes);
+                list.add(temp);
+            }
+        }else{
+            List<String> dateList = db.getDateOfAllEntries();
+            for (int i = 0; i < dateList.size() ; i++) {
+                String date=dateList.get(i);
+                int incomes = db.getIncomesOf(date);
+                HashMap<String, String> temp = new HashMap<String, String>();//temp for recyclerView
+                temp.put(IncomeRecyclerViewAdapterDate.FIRST_COLUMN, months[Integer.parseInt(GetMonthNumber(date))] + " " + GetDayNumber(date));
+                temp.put(IncomeRecyclerViewAdapterDate.SECOND_COLUMN,""+incomes);
+                list.add(temp);
+            }
+        }
+
+        IncomeRecyclerViewAdapterDate adapter = new IncomeRecyclerViewAdapterDate(getActivity(),list);
+        recyclerView.setOnTouchListener(incomeSwipeListener);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
     }
 
     public void onClearIncomes() {

@@ -461,7 +461,7 @@ public class ExpenseDBhelper extends SQLiteOpenHelper {
     }
 
 
-    public static class ExpenseEntry implements BaseColumns {
+    private static class ExpenseEntry implements BaseColumns {
         public static final String TABLE_NAME = "expense";
         public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_DETAIL = "detail";

@@ -3,6 +3,7 @@ package ali.asad.expenserecorder.Home;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,9 @@ public class HomeFragment extends Fragment {
     ImageView moreOrlessImg;
     LinearLayout expandableLayout;
 
+    int dp = 0;
+    boolean loopOn = false;
+
     float progressStarting;
     float progressRunning;
 
@@ -60,9 +64,23 @@ public class HomeFragment extends Fragment {
         moreOrless = (TextView) rootView.findViewById(R.id.moreAndlessText);
         moreOrlessImg = (ImageView) rootView.findViewById(R.id.moreAndlessImage);
         moreOrlessImg.setImageResource(R.drawable.ic_keyboard_arrow_down_black_48dp);
-
         expandableLayout = (LinearLayout) rootView.findViewById(R.id.Expandable_Layout);
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+
+        System.out.println(">DP = " + dp + " & LoopOn: " + loopOn);
+        loopOn=false;//every time when fragment recreates itself we should stop the loop of ui thread
+        if (dp >= 0 && dp < 70) {//if more slider is less than half way
+            dp = 0;
+            moreOrless.setText("More");
+            moreOrlessImg.setImageResource(R.drawable.ic_keyboard_arrow_down_black_48dp);
+        }
+        if (dp >= 70 && dp <= 140) {//if more slider is more than half way
+            dp = 140;
+            moreOrless.setText("Less");
+            moreOrlessImg.setImageResource(R.drawable.ic_keyboard_arrow_up_black_48dp);
+        }
+        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getResources().getDisplayMetrics());
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, px);
         param.gravity = Gravity.CENTER;
         expandableLayout.setLayoutParams(param);
         Refresh();
@@ -181,20 +199,54 @@ public class HomeFragment extends Fragment {
     * This is called when we press more or less buttons
      */
     public void onMoreOrLess() {
-        if (moreOrless.getText().toString().equals("More")) {
+        loopOn = true;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (loopOn) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
 
-            moreOrless.setText("Less");
-            moreOrlessImg.setImageResource(R.drawable.ic_keyboard_arrow_up_black_48dp);
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
-                    , ViewGroup.LayoutParams.WRAP_CONTENT);
-            param.gravity = Gravity.CENTER;
-            expandableLayout.setLayoutParams(param);
-        } else {
-            moreOrless.setText("More");
-            moreOrlessImg.setImageResource(R.drawable.ic_keyboard_arrow_down_black_48dp);
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-            param.gravity = Gravity.CENTER;
-            expandableLayout.setLayoutParams(param);
-        }
+                            if (moreOrless.getText().toString().equals("More")) {
+                                dp += 1;
+                                //converting dp into pixels
+                                int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                                        getResources().getDisplayMetrics());
+                                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
+                                        , px);
+                                param.gravity = Gravity.CENTER;
+                                expandableLayout.setLayoutParams(param);
+                            } else {
+                                dp -= 1;
+                                //converting dp into pixels
+                                int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                                        getResources().getDisplayMetrics());
+                                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, px);
+                                param.gravity = Gravity.CENTER;
+                                expandableLayout.setLayoutParams(param);
+                            }
+                            if (dp == 0) {
+                                moreOrless.setText("More");
+                                moreOrlessImg.setImageResource(R.drawable.ic_keyboard_arrow_down_black_48dp);
+                            }
+                            if (dp == 140) {
+                                moreOrless.setText("Less");
+                                moreOrlessImg.setImageResource(R.drawable.ic_keyboard_arrow_up_black_48dp);
+                            }
+                            if (dp == 0 || dp == 140) {
+                                loopOn = false;
+                            }
+                        }
+                    });
+                    try {
+                        Thread.sleep(2);
+                    } catch (InterruptedException e) {
+                    }
+
+                }
+
+            }
+        }).start();
     }
 }

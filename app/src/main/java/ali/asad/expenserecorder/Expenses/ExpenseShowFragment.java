@@ -250,8 +250,8 @@ public class ExpenseShowFragment extends Fragment {
                 String date = dateList.get(i);
                 int expenses = db.getExpensesOf(date);
                 HashMap<String, String> temp = new HashMap<String, String>();//temp for recyclerView
-                temp.put(ExpenseRecyclerViewAdapterCat.FIRST_COLUMN,months[Integer.parseInt(GetMonthNumber(date))] + " " + GetDayNumber(date));
-                temp.put(ExpenseRecyclerViewAdapterCat.SECOND_COLUMN,""+expenses);
+                temp.put(ExpenseRecyclerViewAdapterDate.FIRST_COLUMN,months[Integer.parseInt(GetMonthNumber(date))] + " " + GetDayNumber(date));
+                temp.put(ExpenseRecyclerViewAdapterDate.SECOND_COLUMN,""+expenses);
                 list.add(temp);
             }
 
@@ -262,8 +262,8 @@ public class ExpenseShowFragment extends Fragment {
                 String date = dateList.get(i);
                 int expenses = db.getExpensesOf(date);
                 HashMap<String, String> temp = new HashMap<String, String>();//temp for recyclerView
-                temp.put(ExpenseRecyclerViewAdapterCat.FIRST_COLUMN, months[Integer.parseInt(GetMonthNumber(date))] + " " + GetDayNumber(date));
-                temp.put(ExpenseRecyclerViewAdapterCat.SECOND_COLUMN,""+expenses);
+                temp.put(ExpenseRecyclerViewAdapterDate.FIRST_COLUMN, months[Integer.parseInt(GetMonthNumber(date))] + " " + GetDayNumber(date));
+                temp.put(ExpenseRecyclerViewAdapterDate.SECOND_COLUMN,""+expenses);
                 list.add(temp);
             }
 

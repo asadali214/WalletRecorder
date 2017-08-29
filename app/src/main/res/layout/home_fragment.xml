@@ -139,7 +139,7 @@
             <LinearLayout
                 android:id="@+id/Expandable_Layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="140dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -280,8 +280,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="35dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -297,8 +297,8 @@
 
                     <Button
                         android:id="@+id/BShowexpense"
-                        android:layout_width="123dp"
-                        android:layout_height="70dp"
+                        android:layout_width="121dp"
+                        android:layout_height="68dp"
                         android:onClick="onShowExpense"
                         android:background="@drawable/box_round_left"
                         android:text="EXPENSES&#10;8000"
@@ -332,8 +332,8 @@
 
                     <Button
                         android:id="@+id/BShowincome"
-                        android:layout_width="123dp"
-                        android:layout_height="70dp"
+                        android:layout_width="121dp"
+                        android:layout_height="68dp"
                         android:onClick="onShowIncome"
                         android:background="@drawable/box_round_left"
                         android:text="INCOMES&#10;40000"
@@ -358,7 +358,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
+                android:layout_marginBottom="35dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -383,8 +383,8 @@
                         android:layout_marginLeft="1dp"
                         android:background="#aaa" />
                     <Button
-                        android:layout_width="113dp"
-                        android:layout_height="70dp"
+                        android:layout_width="111dp"
+                        android:layout_height="68dp"
                         android:onClick="onStatus"
                         android:background="@drawable/box_round_right"
                         android:text="Wallet Status"
@@ -415,8 +415,8 @@
                         android:layout_marginLeft="1dp"
                         android:background="#aaa" />
                     <Button
-                        android:layout_width="113dp"
-                        android:layout_height="70dp"
+                        android:layout_width="111dp"
+                        android:layout_height="68dp"
                         android:onClick="onSummary"
                         android:background="@drawable/box_round_right"
                         android:text="Yearly\nSummary"

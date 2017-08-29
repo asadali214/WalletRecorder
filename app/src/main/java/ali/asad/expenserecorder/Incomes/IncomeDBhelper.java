@@ -101,6 +101,33 @@ public class IncomeDBhelper extends SQLiteOpenHelper {
         return list;
     }
 
+    public List<String> getDateOf(String Month, String Year) {
+        List<String> list = new ArrayList<>();
+        SQLiteDatabase dbRead = getReadableDatabase();
+        String[] projection = {
+                "DISTINCT " + IncomeEntry.COLUMN_NAME_DATE
+        };
+        String whereClause = IncomeEntry.COLUMN_NAME_DATE + " LIKE ?";
+        String[] whereArgs = {Month + "-%-" + Year};
+
+        Cursor cursor = dbRead.query(
+                IncomeEntry.TABLE_NAME,                 // The table to query >>TABLE_NAME
+                projection,                             // The columns to return >>projection
+                whereClause,                            // The columns for the WHERE clause >>whereClause
+                whereArgs,                                // The values for the WHERE clause >>whereArgs
+                null,                                   // group the rows
+                null,                                   // filter by row groups
+                null                                    // The sort order >>orderBy
+        );
+
+        while (cursor.moveToNext()) {
+            String date = cursor.getString(0);
+            list.add(date);
+        }
+        cursor.close();
+        return list;
+    }
+
     public List<String[]> getAllEntriesOf(String Month, String Year) {
         List<String[]> list = new ArrayList<>();
 
@@ -192,6 +219,35 @@ public class IncomeDBhelper extends SQLiteOpenHelper {
         return list;
     }
 
+    public int getIncomesOf(String Date) {
+        int sum = 0;
+        SQLiteDatabase dbRead = getReadableDatabase();
+        String[] projection = {
+                IncomeEntry.COLUMN_NAME_AMOUNT,
+        };
+        String orderBy = IncomeEntry.COLUMN_NAME_DATE;
+
+        String whereClause = IncomeEntry.COLUMN_NAME_DATE + " = ?";
+
+        String[] whereArgs = {Date};
+
+        Cursor cursor = dbRead.query(
+                IncomeEntry.TABLE_NAME,                 // The table to query >>TABLE_NAME
+                projection,                             // The columns to return >>projection
+                whereClause,                            // The columns for the WHERE clause >>whereClause
+                whereArgs,                              // The values for the WHERE clause >>whereArgs
+                null,                                   // group the rows
+                null,                                   // filter by row groups
+                orderBy                                 // The sort order >>orderBy
+        );
+        while (cursor.moveToNext()) {
+            sum += cursor.getInt(0);
+        }
+        cursor.close();
+
+        return sum;
+    }
+
     public String getAmountOf(int id) {
         String amount = "";
         SQLiteDatabase dbRead = getReadableDatabase();
@@ -214,6 +270,7 @@ public class IncomeDBhelper extends SQLiteOpenHelper {
 
         return amount;
     }
+
     public String getDateOf(int id) {
         String date = "";
         SQLiteDatabase dbRead = getReadableDatabase();
@@ -263,7 +320,7 @@ public class IncomeDBhelper extends SQLiteOpenHelper {
 
 
 
-    public static class IncomeEntry implements BaseColumns {
+    private static class IncomeEntry implements BaseColumns {
         public static final String TABLE_NAME = "income";
         public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_DETAIL = "detail";
