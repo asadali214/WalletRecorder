@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="340dp"
-    android:layout_height="250dp"
+    android:layout_height="150dp"
     android:background="@drawable/box2"
     android:orientation="vertical" >
 
@@ -10,23 +10,10 @@
         android:layout_height="1dp"
         android:layout_weight="2.5"
         android:gravity="center"
-        android:text="What was the Account Balance at \nthe start of the ongoing month?"
+        android:text="Are you sure you want to\nDelete all items?"
         android:textSize="20dp"
         android:textStyle="italic"
         android:textColor="#000000"/>
-
-    <EditText
-        android:id="@+id/ETstarting"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_height="1dp"
-        android:gravity="center"
-        android:inputType="number"
-        android:textSize="20dp"
-        android:hint="Enter New Starting Balance..."
-        android:background="@drawable/box3"
-        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,22 +22,22 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/btnOk"
+            android:id="@+id/btnYes"
             android:layout_width="120dp"
             android:layout_height="40dp"
             android:textSize="18dp"
             android:background="@drawable/box3"
             android:layout_marginRight="10dp"
-            android:text="Ok" />
+            android:text="Yes" />
 
         <Button
-            android:id="@+id/btnCancel"
+            android:id="@+id/btnNo"
             android:layout_width="120dp"
             android:layout_height="40dp"
             android:textSize="18dp"
             android:background="@drawable/box3"
             android:layout_marginLeft="10dp"
-            android:text="Cancel" />
+            android:text="No" />
     </LinearLayout>
 
 </LinearLayout>

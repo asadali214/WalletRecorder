@@ -1,6 +1,7 @@
 package ali.asad.expenserecorder.Expenses;
 
 import android.app.Activity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import ali.asad.expenserecorder.Categories.CategoryDBhelper;
 import ali.asad.expenserecorder.R;
@@ -42,6 +44,7 @@ public class ExpenseRecyclerViewAdapterCat extends RecyclerView.Adapter<ExpenseV
     @Override
     public void onBindViewHolder(ExpenseViewHolderCat holder, int position) {
         HashMap<String, String> map = list.get(position);
+        holder.activity=activity;
         holder.name.setText(map.get(FIRST_COLUMN)+":");
         holder.amount.setText(map.get(SECOND_COLUMN));
         //Setting Category icon to image view icon using lib Picasso..
@@ -51,6 +54,11 @@ public class ExpenseRecyclerViewAdapterCat extends RecyclerView.Adapter<ExpenseV
             Picasso.with(activity).load(activity.getResources().getIdentifier(iconName,
                     "drawable", activity.getPackageName())).into(holder.icon);
         }
+        List<String> list = new ArrayList<>();
+        ExpenseRecyclerViewAdapterItem adapter = new ExpenseRecyclerViewAdapterItem(activity,list,holder);
+        holder.recyclerView.setAdapter(adapter);
+        holder.recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        holder.isShowing=false;
     }
 
     @Override

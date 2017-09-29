@@ -30,7 +30,7 @@ import ali.asad.expenserecorder.Status.StatusDBhelper;
 public class IncomeShowFragment extends Fragment {
     ArrayList<HashMap<String, String>> list;
     RecyclerView recyclerView;
-    Spinner month, year;
+    public static Spinner month, year;
     View rootView;
 
     String months[] = {"All", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
@@ -281,11 +281,12 @@ public class IncomeShowFragment extends Fragment {
     public String GetMonthNumberFromMonth(String month) {
         String monthNum = "";
         for (int i = 0; i < months.length; i++) {
-            if (month == months[i])
+            if (month.equals(months[i])) {
                 if (i < 10)
                     monthNum = "0" + i;
                 else
                     monthNum = "" + i;
+            }
         }
         return monthNum;
     }

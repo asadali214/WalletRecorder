@@ -334,7 +334,7 @@ public class ExpenseShowFragment extends Fragment {
     public String GetMonthNumberFromMonth(String month) {
         String monthNum = "";
         for (int i = 0; i < months.length; i++) {
-            if (month == months[i]) {
+            if (month.equals(months[i])) {
                 if (i < 10)
                     monthNum = "0" + i;
                 else

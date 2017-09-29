@@ -12,32 +12,39 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:text="DateNum:"
-        android:textSize="18dp"
-        android:textColor="#000"/>
+        android:textColor="#000"
+        android:textSize="18dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:text="Amount Spent: "
-            android:textSize="17dp"/>
+            android:textSize="17dp" />
+
         <TextView
             android:id="@+id/amountIncomeByDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="Total Amount"
-            android:textSize="17dp"
             android:textColor="#000"
-            android:textStyle="bold"/>
+            android:textSize="17dp"
+            android:textStyle="bold" />
 
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/itemIncomeDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

@@ -128,6 +128,52 @@ public class IncomeDBhelper extends SQLiteOpenHelper {
         return list;
     }
 
+    public List<String[]> getAllEntriesOf(String Month, String Day, String Year) {
+        List<String[]> list = new ArrayList<>();
+
+        SQLiteDatabase dbRead = getReadableDatabase();
+        String[] projection = {
+                IncomeEntry._ID,
+                IncomeEntry.COLUMN_NAME_DATE,
+                IncomeEntry.COLUMN_NAME_DETAIL,
+                IncomeEntry.COLUMN_NAME_AMOUNT,
+        };
+        String whereClause = IncomeEntry.COLUMN_NAME_DATE + " = ?";
+        String[] whereArgs = new String[]{
+                Month + "-" + Day + "-" + Year
+        };
+        String orderBy = IncomeEntry.COLUMN_NAME_DATE;
+
+        Cursor cursor = dbRead.query(
+                IncomeEntry.TABLE_NAME,                // The table to query >>TABLE_NAME
+                projection,                             // The columns to return >>projection
+                whereClause,                            // The columns for the WHERE clause >>whereClause
+                whereArgs,                              // The values for the WHERE clause >>whereArgs
+                null,                                   // group the rows
+                null,                                   // filter by row groups
+                orderBy                                 // The sort order >>orderBy
+        );
+
+        while (cursor.moveToNext()) {
+
+            String GOTvals[] = new String[4];
+
+            int id = cursor.getInt(0);
+            String date = cursor.getString(1);
+            String detail = cursor.getString(2);
+            String amount = cursor.getString(3);
+
+            GOTvals[0] = "" + id;
+            GOTvals[1] = date;
+            GOTvals[2] = detail;
+            GOTvals[3] = amount;
+
+            list.add(GOTvals);
+        }
+        cursor.close();
+        return list;
+    }
+
     public List<String[]> getAllEntriesOf(String Month, String Year) {
         List<String[]> list = new ArrayList<>();
 
@@ -316,8 +362,6 @@ public class IncomeDBhelper extends SQLiteOpenHelper {
         }
         c.close();
     }
-
-
 
 
     private static class IncomeEntry implements BaseColumns {

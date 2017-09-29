@@ -1,6 +1,7 @@
 package ali.asad.expenserecorder.Expenses;
 
 import android.app.Activity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import ali.asad.expenserecorder.R;
 
@@ -41,6 +43,12 @@ public class ExpenseRecyclerViewAdapterDate extends RecyclerView.Adapter<Expense
         HashMap<String, String> map = list.get(position);
         holder.date.setText(map.get(FIRST_COLUMN) + ":");
         holder.amount.setText(map.get(SECOND_COLUMN));
+        holder.activity = activity;
+        List<String> list = new ArrayList<>();
+        ExpenseRecyclerViewAdapterItem adapter = new ExpenseRecyclerViewAdapterItem(activity, list, holder);
+        holder.recyclerView.setAdapter(adapter);
+        holder.recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        holder.isShowing=false;
     }
 
     @Override

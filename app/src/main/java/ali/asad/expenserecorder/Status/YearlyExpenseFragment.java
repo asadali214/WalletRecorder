@@ -81,7 +81,7 @@ public class YearlyExpenseFragment extends Fragment implements AdapterView.OnIte
                     String Month = months[position];
                     System.out.println("Month: " + Month);
                     System.out.println("Value: " + Amount);
-                    Toast.makeText(getActivity(), "Expenses in "+Month+": "+Amount, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Expenses Here: "+Amount, Toast.LENGTH_SHORT).show();
                 }
                 else {
                     ExpenseDBhelper db = new ExpenseDBhelper(getActivity());

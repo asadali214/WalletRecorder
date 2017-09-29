@@ -36,7 +36,7 @@ public class AccountStatusFragment extends Fragment implements AdapterView.OnIte
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.status_account_fragment, container, false);
         System.out.println("Account Status Opened");
-
+        getActivity().setTitle("Wallet Status");
         final LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.main_status_view);
         StartingBalance = (TextView) rootView.findViewById(R.id.startingBalance);
         Income = (TextView) rootView.findViewById(R.id.income);

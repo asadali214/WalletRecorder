@@ -68,18 +68,19 @@ public class HomeFragment extends Fragment {
 
         System.out.println(">DP = " + dp + " & LoopOn: " + loopOn);
         loopOn=false;//every time when fragment recreates itself we should stop the loop of ui thread
-        if (dp >= 0 && dp < 70) {//if more slider is less than half way
+        if (dp >= 0 && dp < 75) {//if more slider is less than half way
             dp = 0;
             moreOrless.setText("More");
             moreOrlessImg.setImageResource(R.drawable.ic_keyboard_arrow_down_black_48dp);
         }
-        if (dp >= 70 && dp <= 140) {//if more slider is more than half way
-            dp = 140;
+        if (dp >= 75 && dp <= 150) {//if more slider is more than half way
+            dp = 150;
             moreOrless.setText("Less");
             moreOrlessImg.setImageResource(R.drawable.ic_keyboard_arrow_up_black_48dp);
         }
         int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
+
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, px);
         param.gravity = Gravity.CENTER;
         expandableLayout.setLayoutParams(param);
@@ -209,7 +210,7 @@ public class HomeFragment extends Fragment {
                         public void run() {
 
                             if (moreOrless.getText().toString().equals("More")) {
-                                dp += 1;
+                                dp += 2;
                                 //converting dp into pixels
                                 int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                                         getResources().getDisplayMetrics());
@@ -218,7 +219,7 @@ public class HomeFragment extends Fragment {
                                 param.gravity = Gravity.CENTER;
                                 expandableLayout.setLayoutParams(param);
                             } else {
-                                dp -= 1;
+                                dp -= 2;
                                 //converting dp into pixels
                                 int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                                         getResources().getDisplayMetrics());
@@ -230,17 +231,17 @@ public class HomeFragment extends Fragment {
                                 moreOrless.setText("More");
                                 moreOrlessImg.setImageResource(R.drawable.ic_keyboard_arrow_down_black_48dp);
                             }
-                            if (dp == 140) {
+                            if (dp == 150) {
                                 moreOrless.setText("Less");
                                 moreOrlessImg.setImageResource(R.drawable.ic_keyboard_arrow_up_black_48dp);
                             }
-                            if (dp == 0 || dp == 140) {
+                            if (dp == 0 || dp == 150) {
                                 loopOn = false;
                             }
                         }
                     });
                     try {
-                        Thread.sleep(2);
+                        Thread.sleep(4);
                     } catch (InterruptedException e) {
                     }
 

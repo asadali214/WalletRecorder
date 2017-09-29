@@ -40,7 +40,7 @@ import static ali.asad.expenserecorder.Status.StatusTabFragment.adpYear;
 
 public class YearlyRunningFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     String months[] = {"January", "", "February", "", "March", "", "April", "", "May", "",
-            "June", "", "July", "", "August", "", "September", "", "October", "", "November", "", "December",""};
+            "June", "", "July", "", "August", "", "September", "", "October", "", "November", "", "December", ""};
     LineChart lineChart;
     public static Spinner year;
 
@@ -71,7 +71,7 @@ public class YearlyRunningFragment extends Fragment implements AdapterView.OnIte
                 ValMonth = "" + (i + 1);
 
             int Running = db.getRunning(ValMonth, "" + year.getSelectedItem());
-            Entry entry = new Entry(i*2, Running);
+            Entry entry = new Entry(i * 2, Running);
             lineEntries.add(entry);
         }
 
@@ -91,7 +91,7 @@ public class YearlyRunningFragment extends Fragment implements AdapterView.OnIte
         description.setText("");
         lineChart.setDescription(description);
         Calendar cal = Calendar.getInstance();
-        lineChart.moveViewToX((cal.get(Calendar.MONTH) * 2)-7);
+        lineChart.moveViewToX((cal.get(Calendar.MONTH) * 2) - 7);
 
         XAxis xval = lineChart.getXAxis();
         xval.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -100,7 +100,10 @@ public class YearlyRunningFragment extends Fragment implements AdapterView.OnIte
         xval.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return months[Math.round(value)];
+                if (value > 23 || value < 0)
+                    return "";
+                else
+                    return months[Math.round(value)];
             }
         });
         xval.setDrawGridLines(false);

@@ -293,6 +293,101 @@ public class ExpenseDBhelper extends SQLiteOpenHelper {
         return sum;
     }
 
+    public List<String[]> getAllEntriesIn(String Category, String Month, String Year) {
+        List<String[]> list = new ArrayList<>();
+
+        SQLiteDatabase dbRead = getReadableDatabase();
+        String[] projection = {
+                ExpenseEntry._ID,
+                ExpenseEntry.COLUMN_NAME_DATE,
+                ExpenseEntry.COLUMN_NAME_DETAIL,
+                ExpenseEntry.COLUMN_NAME_AMOUNT,
+                ExpenseEntry.COLUMN_NAME_CATEGORY
+        };
+        String whereClause = ExpenseEntry.COLUMN_NAME_DATE + " LIKE ? AND "
+                + ExpenseEntry.COLUMN_NAME_CATEGORY + " = ?";
+        String[] whereArgs = new String[]{
+                Month + "-%-" + Year, Category
+        };
+        String orderBy = ExpenseEntry.COLUMN_NAME_DATE;
+
+        Cursor cursor = dbRead.query(
+                ExpenseEntry.TABLE_NAME,                // The table to query >>TABLE_NAME
+                projection,                             // The columns to return >>projection
+                whereClause,                            // The columns for the WHERE clause >>whereClause
+                whereArgs,                              // The values for the WHERE clause >>whereArgs
+                null,                                   // group the rows
+                null,                                   // filter by row groups
+                orderBy                                 // The sort order >>orderBy
+        );
+        while (cursor.moveToNext()) {
+
+            String GOTvals[] = new String[5];
+
+            int id = cursor.getInt(0);
+            String date = cursor.getString(1);
+            String detail = cursor.getString(2);
+            String amount = cursor.getString(3);
+            String category = cursor.getString(4);
+
+            GOTvals[0] = "" + id;
+            GOTvals[1] = date;
+            GOTvals[2] = detail;
+            GOTvals[3] = amount;
+            GOTvals[4] = category;
+            list.add(GOTvals);
+        }
+        cursor.close();
+        return list;
+    }
+
+    public List<String[]> getAllEntriesIn(String Category, String Year) {
+        List<String[]> list = new ArrayList<>();
+
+        SQLiteDatabase dbRead = getReadableDatabase();
+        String[] projection = {
+                ExpenseEntry._ID,
+                ExpenseEntry.COLUMN_NAME_DATE,
+                ExpenseEntry.COLUMN_NAME_DETAIL,
+                ExpenseEntry.COLUMN_NAME_AMOUNT,
+                ExpenseEntry.COLUMN_NAME_CATEGORY
+        };
+        String whereClause = ExpenseEntry.COLUMN_NAME_DATE + " LIKE ? AND "
+                + ExpenseEntry.COLUMN_NAME_CATEGORY + " = ?";
+        String[] whereArgs = new String[]{
+                "%-" + Year, Category
+        };
+        String orderBy = ExpenseEntry.COLUMN_NAME_DATE;
+
+        Cursor cursor = dbRead.query(
+                ExpenseEntry.TABLE_NAME,                // The table to query >>TABLE_NAME
+                projection,                             // The columns to return >>projection
+                whereClause,                            // The columns for the WHERE clause >>whereClause
+                whereArgs,                              // The values for the WHERE clause >>whereArgs
+                null,                                   // group the rows
+                null,                                   // filter by row groups
+                orderBy                                 // The sort order >>orderBy
+        );
+        while (cursor.moveToNext()) {
+
+            String GOTvals[] = new String[5];
+
+            int id = cursor.getInt(0);
+            String date = cursor.getString(1);
+            String detail = cursor.getString(2);
+            String amount = cursor.getString(3);
+            String category = cursor.getString(4);
+
+            GOTvals[0] = "" + id;
+            GOTvals[1] = date;
+            GOTvals[2] = detail;
+            GOTvals[3] = amount;
+            GOTvals[4] = category;
+            list.add(GOTvals);
+        }
+        cursor.close();
+        return list;
+    }
 
     public List<String[]> getAllEntriesOf(String Month, String Year) {
         List<String[]> list = new ArrayList<>();
@@ -321,6 +416,54 @@ public class ExpenseDBhelper extends SQLiteOpenHelper {
                 null,                                   // group the rows
                 null,                                   // filter by row groups
                 orderBy                                 // The sort order >>orderBy
+        );
+        while (cursor.moveToNext()) {
+
+            String GOTvals[] = new String[5];
+
+            int id = cursor.getInt(0);
+            String date = cursor.getString(1);
+            String detail = cursor.getString(2);
+            String amount = cursor.getString(3);
+            String category = cursor.getString(4);
+
+            GOTvals[0] = "" + id;
+            GOTvals[1] = date;
+            GOTvals[2] = detail;
+            GOTvals[3] = amount;
+            GOTvals[4] = category;
+            list.add(GOTvals);
+        }
+        cursor.close();
+        return list;
+    }
+
+    public List<String[]> getAllEntriesOf(String Month, String Day, String Year) {
+        List<String[]> list = new ArrayList<>();
+
+        //Month =Month+"-";
+        //Year = "-"+Year;
+        SQLiteDatabase dbRead = getReadableDatabase();
+        String[] projection = {
+                ExpenseEntry._ID,
+                ExpenseEntry.COLUMN_NAME_DATE,
+                ExpenseEntry.COLUMN_NAME_DETAIL,
+                ExpenseEntry.COLUMN_NAME_AMOUNT,
+                ExpenseEntry.COLUMN_NAME_CATEGORY
+        };
+        String whereClause = ExpenseEntry.COLUMN_NAME_DATE + " = ?";
+        String[] whereArgs = new String[]{
+                Month + "-" + Day + "-" + Year
+        };
+
+        Cursor cursor = dbRead.query(
+                ExpenseEntry.TABLE_NAME,                // The table to query >>TABLE_NAME
+                projection,                             // The columns to return >>projection
+                whereClause,                            // The columns for the WHERE clause >>whereClause
+                whereArgs,                              // The values for the WHERE clause >>whereArgs
+                null,                                   // group the rows
+                null,                                   // filter by row groups
+                null                                 // The sort order >>orderBy
         );
         while (cursor.moveToNext()) {
 

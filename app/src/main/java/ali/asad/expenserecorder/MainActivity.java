@@ -328,6 +328,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.clear_selected) {
+
             if (showExpenseFragment.isVisible())
                 showExpenseFragment.onClearSelectedExpenses();
             if (showIncomeFragment.isVisible())
@@ -336,14 +337,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 showCategoryFragment.onClearSelectedCategories();
 
         } else if (id == R.id.clear_all) {
-
-            if (showExpenseFragment.isVisible())
-                showExpenseFragment.onClearExpenses();
-            if (showIncomeFragment.isVisible())
-                showIncomeFragment.onClearIncomes();
-            if (showCategoryFragment.isVisible())
-                showCategoryFragment.onClearCategories();
-
+            //clearing all records on user's choice given through dialog
+            showConfirmDeleteAllDialog();
         } else if (id == R.id.adding) {
 
             if (expenseAddFragment.isVisible())
@@ -538,6 +533,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.commit();
     }
 
+    public void showConfirmDeleteAllDialog(){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_confirm_delete);
+        dialog.setTitle("Confirm Deletion!");
+
+        Button Yes = (Button) dialog.findViewById(R.id.btnYes);
+        Button No = (Button) dialog.findViewById(R.id.btnNo);
+
+        Yes.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if (showExpenseFragment.isVisible())
+                    showExpenseFragment.onClearExpenses();
+                if (showIncomeFragment.isVisible())
+                    showIncomeFragment.onClearIncomes();
+                if (showCategoryFragment.isVisible())
+                    showCategoryFragment.onClearCategories();
+            }
+        });
+
+        No.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+    }
     /*
     * Called when we press Budget image icon used to change the budget
     * of the current month.
